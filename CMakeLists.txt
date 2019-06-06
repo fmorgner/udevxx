@@ -8,6 +8,8 @@ project(udevxx
 set(CMAKE_CXX_STANDARD "17")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package("PkgConfig")
@@ -18,12 +20,30 @@ pkg_check_modules("udev"
     "libudev"
 )
 
+# Library
+
+add_library("udevxx"
+    "src/udevxx/context.cpp"
+)
+target_link_libraries("udevxx"
+    PkgConfig::udev
+)
+target_include_directories("udevxx"
+    SYSTEM PUBLIC
+    "include"
+)
+
+install(TARGETS "udevxx")
+install(DIRECTORY "include/udevxx"
+    DESTINATION "include"
+    FILES_MATCHING PATTERN "*.hpp"
+)
+
+# Demos
+
 add_executable("udevxx_demo"
     "src/demo.cpp"
 )
 target_link_libraries("udevxx_demo"
-    PkgConfig::udev
-)
-target_include_directories("udev_demo"
-    "include"
+    "udevxx"
 )

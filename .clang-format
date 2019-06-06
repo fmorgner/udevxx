@@ -1,0 +1,49 @@
+﻿AccessModifierOffset: 0
+AlignAfterOpenBracket: Align
+AlignEscapedNewlines: Right
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterClass: true
+    AfterEnum: true
+    AfterControlStatement: true
+    AfterFunction: true
+    AfterNamespace: true
+    AfterStruct: true
+    AfterUnion: true
+    AfterExternBlock: true
+    BeforeCatch: true
+    BeforeElse: true
+    IndentBraces: false
+BreakBeforeInheritanceComma: true
+BreakConstructorInitializers: BeforeComma
+ColumnLimit: '120'
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+IncludeBlocks: Regroup
+IncludeCategories:
+    - Regex: '<[[:alnum:]._/]+>'
+      Priority: 10
+IncludeCategories:
+    - Regex: '<[[:alnum:]._/]+\.h>'
+      Priority: 10
+IndentWidth: 2
+Language: Cpp
+NamespaceIndentation: All
+PointerAlignment: Middle
+ReflowComments: true
+SortIncludes: true
+SortUsingDeclarations: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpacesBeforeTrailingComments: 2
+Standard: Cpp11
+TabWidth: 2
+UseTab: Never

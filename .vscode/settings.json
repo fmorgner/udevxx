@@ -1,0 +1,8 @@
+{
+    "ccls.codeLens.enabled": false,
+    "ccls.misc.compilationDatabaseDirectory": "build",
+    "cmake.parallelJobs": 2,
+    "cmake.revealLog": "never",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ccls-project.ccls"
+}

@@ -1,12 +1,13 @@
 #ifndef UDEVXX_DETAIL_MEMORY_API_HPP
 #define UDEVXX_DETAIL_MEMORY_API_HPP
 
-#include <stdexcept>
-#include <tuple>
 #include <udevxx/detail/deferred.hpp>
-#include <utility>
 
 #include <libudev.h>
+
+#include <stdexcept>
+#include <tuple>
+#include <utility>
 
 namespace udevxx::detail
 {

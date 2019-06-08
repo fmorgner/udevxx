@@ -1,13 +1,14 @@
 #ifndef UDEVXX_DETAIL_REF_PTR_HPP
 #define UDEVXX_DETAIL_REF_PTR_HPP
 
+#include <udevxx/detail/memory_api.hpp>
+
+#include <libudev.h>
+
 #include <stdexcept>
 #include <tuple>
 #include <type_traits>
-#include <udevxx/detail/memory_api.hpp>
 #include <utility>
-
-#include <libudev.h>
 
 namespace udevxx::detail
 {

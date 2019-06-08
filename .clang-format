@@ -29,11 +29,12 @@ Cpp11BracedListStyle: true
 FixNamespaceComments: true
 IncludeBlocks: Regroup
 IncludeCategories:
-    - Regex: '<[[:alnum:]._/]+>'
+    - Regex: '^<udevxx/.*'
       Priority: 10
-IncludeCategories:
-    - Regex: '<[[:alnum:]._/]+\.h>'
-      Priority: 10
+    - Regex: '<libudev\.h>'
+      Priority: 20
+    - Regex: '<[[:alnum:]._]+>'
+      Priority: 30
 IndentWidth: 2
 Language: Cpp
 NamespaceIndentation: All

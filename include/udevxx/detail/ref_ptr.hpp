@@ -49,6 +49,11 @@ namespace udevxx::detail
       std::swap(m_raw, other.m_raw);
     }
 
+    UdevOpaqueType * get() const
+    {
+      return m_raw;
+    }
+
     private:
     UdevOpaqueType * m_raw{};
   };

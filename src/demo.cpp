@@ -1,11 +1,11 @@
-#include <iostream>
 #include <udevxx/context.hpp>
+
+#include <iostream>
 
 int main()
 {
-  auto ctx = udevxx::context{};
-  auto ct2 = ctx;
-  auto ct3 = std::move(ct2);
+  auto context = udevxx::context{};
+  auto devices = context.devices();
 
   std::cout << "Hello, udev!\n";
 }

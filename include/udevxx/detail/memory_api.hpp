@@ -51,19 +51,19 @@ namespace udevxx::detail
     }
 
     template <typename... ParameterTypes>
-    auto alloc(ParameterTypes... parameters)
+    auto alloc(ParameterTypes... parameters) const noexcept
     {
       static_assert(deferred_v<ParameterTypes...>, "Missing udev C memory API!");
     }
 
     template <typename RawType>
-    auto retain(RawType *)
+    auto retain(RawType *) const noexcept
     {
       static_assert(deferred_v<RawType>, "Missing udev C memory API!");
     }
 
     template <typename RawType>
-    void release(RawType *)
+    void release(RawType *) const noexcept
     {
       static_assert(deferred_v<RawType>, "Missing udev C memory API!");
     }
@@ -88,6 +88,13 @@ namespace udevxx::detail
       udev_enumerate_new,   // alloc
       udev_enumerate_ref,   // retain
       udev_enumerate_unref  // release
+  };
+
+  template <>
+  auto constexpr memory_api_v<udev_device> = memory_api{
+      udev_device_new_from_syspath,  // alloc
+      udev_device_ref,               // retain
+      udev_device_unref,             // release
   };
 
 }  // namespace udevxx::detail

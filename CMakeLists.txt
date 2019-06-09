@@ -24,7 +24,9 @@ pkg_check_modules("udev"
 
 add_library("udevxx"
     "src/udevxx/context.cpp"
+    "src/udevxx/device.cpp"
     "src/udevxx/enumerator.cpp"
+    "src/udevxx/detail/device_iterator.cpp"
 )
 target_link_libraries("udevxx"
     PkgConfig::udev

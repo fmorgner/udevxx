@@ -44,6 +44,16 @@ namespace udevxx::detail
       return *this;
     }
 
+    bool operator==(ref_ptr const & other) const noexcept
+    {
+      return m_raw == other.m_raw;
+    }
+
+    bool operator!=(ref_ptr const & other) const noexcept
+    {
+      return !(*this == other);
+    }
+
     void swap(ref_ptr & other) noexcept
     {
       std::swap(m_raw, other.m_raw);

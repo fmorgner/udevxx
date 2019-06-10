@@ -3,6 +3,7 @@
 
 #include <udevxx/detail/ref_ptr.hpp>
 #include <udevxx/subsystem.hpp>
+#include <udevxx/sysname.hpp>
 #include <udevxx/syspath.hpp>
 
 #include <string>
@@ -22,6 +23,7 @@ namespace udevxx
 
     udevxx::subsystem subsystem() const;
     udevxx::syspath system_path() const;
+    udevxx::sysname system_name() const;
 
     private:
     device(detail::ref_ptr<udev> context, syspath path);

@@ -23,4 +23,9 @@ namespace udevxx
     return syspath{udev_device_get_syspath(m_impl.get())};
   }
 
+  sysname device::system_name() const
+  {
+    return sysname{udev_device_get_sysname(m_impl.get())};
+  }
+
 };  // namespace udevxx

@@ -28,6 +28,7 @@ add_library("udevxx"
     "src/udevxx/device.cpp"
     "src/udevxx/enumerator.cpp"
     "src/udevxx/subsystem.cpp"
+    "src/udevxx/sysname.cpp"
     "src/udevxx/syspath.cpp"
 )
 target_link_libraries("udevxx"

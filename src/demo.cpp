@@ -13,6 +13,6 @@ int main()
 
   for (auto & device : devices)
   {
-    std::cout << device.system_path() << "\n\t" << device.subsystem() << '\n';
+    std::cout << device.system_path() << "\n\t" << device.subsystem() << "\n\t" << device.system_name() << '\n';
   }
 }

@@ -1,5 +1,5 @@
-#ifndef UDEVXX_ENUMERATOR_HPP
-#define UDEVXX_ENUMERATOR_HPP
+#ifndef UDEVXX_DEVICE_ENUMERATOR_HPP
+#define UDEVXX_DEVICE_ENUMERATOR_HPP
 
 #include <udevxx/detail/device_iterator.hpp>
 #include <udevxx/detail/ref_ptr.hpp>
@@ -20,7 +20,7 @@ namespace udevxx
 
   static auto constexpr initialized = initialized_t{};
 
-  struct enumerator
+  struct device_enumerator
   {
     friend struct context;
 
@@ -45,7 +45,7 @@ namespace udevxx
      *
      * @param subsystem The subsystem to match against
      */
-    enumerator & match(subsystem subsystem);
+    device_enumerator & match(subsystem subsystem);
 
     /**
      * @brief Match only device not in the given subsystem
@@ -54,17 +54,17 @@ namespace udevxx
      *
      * @param subsystem The subsystem to match against
      */
-    enumerator & dont_match(subsystem subsystem);
+    device_enumerator & dont_match(subsystem subsystem);
 
     /**
      * @brief Match only initialized devices
      *
      * @param initialized A tag for selection this match
      */
-    enumerator & match(initialized_t initialized);
+    device_enumerator & match(initialized_t initialized);
 
     private:
-    explicit enumerator(detail::ref_ptr<udev> context);
+    explicit device_enumerator(detail::ref_ptr<udev> context);
 
     detail::ref_ptr<udev> const m_context;
     detail::ref_ptr<udev_enumerate> const m_impl;

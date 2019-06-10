@@ -3,7 +3,7 @@
 
 #include <udevxx/context.hpp>
 #include <udevxx/device.hpp>
-#include <udevxx/enumerator.hpp>
+#include <udevxx/device_enumerator.hpp>
 #include <udevxx/subsystem.hpp>
 #include <udevxx/sysname.hpp>
 #include <udevxx/syspath.hpp>

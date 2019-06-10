@@ -14,9 +14,9 @@ namespace udevxx
     lhs.swap(rhs);
   }
 
-  enumerator context::devices() const
+  device_enumerator context::devices() const
   {
-    return enumerator{m_impl};
+    return device_enumerator{m_impl};
   }
 
 };  // namespace udevxx

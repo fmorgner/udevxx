@@ -4,8 +4,12 @@
 
 int main()
 {
+  using namespace udevxx::literals;
+
   auto context = udevxx::context{};
   auto devices = context.devices();
+
+  devices.match("leds"_sub);
 
   for (auto & device : devices)
   {

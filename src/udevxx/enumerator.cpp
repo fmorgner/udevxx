@@ -23,4 +23,16 @@ namespace udevxx
     return iterator{m_context, m_impl, nullptr};
   }
 
+  enumerator & enumerator::match(subsystem subsystem)
+  {
+    udev_enumerate_add_match_subsystem(m_impl.get(), subsystem->c_str());
+    return *this;
+  }
+
+  enumerator & enumerator::dont_match(subsystem subsystem)
+  {
+    udev_enumerate_add_nomatch_subsystem(m_impl.get(), subsystem->c_str());
+    return *this;
+  }
+
 }  // namespace udevxx

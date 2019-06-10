@@ -22,6 +22,9 @@ namespace udevxx
     iterator begin() const noexcept;
     iterator end() const noexcept;
 
+    enumerator & match(subsystem subsystem);
+    enumerator & dont_match(subsystem subsystem);
+
     private:
     explicit enumerator(detail::ref_ptr<udev> context);
 

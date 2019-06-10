@@ -35,7 +35,7 @@ namespace udevxx
     return *this;
   }
 
-  enumerator & enumerator::match(initialized_tag)
+  enumerator & enumerator::match(initialized_t)
   {
     udev_enumerate_add_match_is_initialized(m_impl.get());
     return *this;

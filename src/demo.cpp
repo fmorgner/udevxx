@@ -9,7 +9,7 @@ int main()
   auto context = udevxx::context{};
   auto devices = context.devices();
 
-  devices.match("leds"_sub);
+  devices.match("leds"_sub).match(udevxx::initialized);
 
   for (auto & device : devices)
   {

@@ -1,4 +1,5 @@
 #include <udevxx/detail/device_iterator.hpp>
+#include <udevxx/syspath.hpp>
 
 namespace udevxx::detail
 {
@@ -9,7 +10,7 @@ namespace udevxx::detail
   {
     if (m_entry)
     {
-      m_device = device{m_context, udev_list_entry_get_name(m_entry)};
+      m_device = device{m_context, syspath{udev_list_entry_get_name(m_entry)}};
     }
   }
 
@@ -17,7 +18,7 @@ namespace udevxx::detail
   {
     if ((m_entry = udev_list_entry_get_next(m_entry)))
     {
-      m_device = device{m_context, udev_list_entry_get_name(m_entry)};
+      m_device = device{m_context, syspath{udev_list_entry_get_name(m_entry)}};
     }
     else
     {

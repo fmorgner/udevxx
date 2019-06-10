@@ -2,6 +2,8 @@
 #define UDEVXX_DEVICE_HPP
 
 #include <udevxx/detail/ref_ptr.hpp>
+#include <udevxx/subsystem.hpp>
+#include <udevxx/syspath.hpp>
 
 #include <string>
 
@@ -18,11 +20,11 @@ namespace udevxx
     friend struct enumerator;
     friend detail::device_iterator;
 
-    std::string subsystem() const;
-    std::string system_path() const;
+    udevxx::subsystem subsystem() const;
+    udevxx::syspath system_path() const;
 
     private:
-    device(detail::ref_ptr<udev> context, std::string syspath);
+    device(detail::ref_ptr<udev> context, syspath path);
 
     detail::ref_ptr<udev> m_context;
     detail::ref_ptr<udev_device> m_impl;

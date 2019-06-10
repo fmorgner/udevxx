@@ -9,8 +9,6 @@ int main()
 
   for (auto & device : devices)
   {
-    std::cout << "device: " << device.system_path() << "\n\tsubsystem:" << device.subsystem() << '\n';
+    std::cout << device.system_path() << "\n\t" << device.subsystem() << '\n';
   }
-
-  std::cout << "Hello, udev!\n";
 }

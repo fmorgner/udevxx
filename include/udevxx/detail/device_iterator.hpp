@@ -12,6 +12,7 @@
 
 namespace udevxx::detail
 {
+
   struct device_iterator
   {
     using iterator_category = std::forward_iterator_tag;

@@ -7,20 +7,20 @@ namespace udevxx
 
   using namespace detail;
 
-  device::device(ref_ptr<udev> context, std::string syspath)
+  device::device(ref_ptr<udev> context, syspath path)
       : m_context{std::move(context)}
-      , m_impl{m_context.get(), syspath.c_str()}
+      , m_impl{m_context.get(), path->c_str()}
   {
   }
 
-  std::string device::subsystem() const
+  subsystem device::subsystem() const
   {
-    return udev_device_get_subsystem(m_impl.get());
+    return ::udevxx::subsystem{udev_device_get_subsystem(m_impl.get())};
   }
 
-  std::string device::system_path() const
+  syspath device::system_path() const
   {
-    return udev_device_get_syspath(m_impl.get());
+    return syspath{udev_device_get_syspath(m_impl.get())};
   }
 
 };  // namespace udevxx

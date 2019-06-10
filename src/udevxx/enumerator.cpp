@@ -35,4 +35,10 @@ namespace udevxx
     return *this;
   }
 
+  enumerator & enumerator::match(initialized_tag)
+  {
+    udev_enumerate_add_match_is_initialized(m_impl.get());
+    return *this;
+  }
+
 }  // namespace udevxx

@@ -13,6 +13,13 @@
 namespace udevxx
 {
 
+  constexpr struct initialized_tag
+  {
+    constexpr explicit initialized_tag(bool = true) noexcept
+    {
+    }
+  } initialized;
+
   struct enumerator
   {
     friend struct context;
@@ -24,6 +31,8 @@ namespace udevxx
 
     enumerator & match(subsystem subsystem);
     enumerator & dont_match(subsystem subsystem);
+
+    enumerator & match(initialized_tag initialized);
 
     private:
     explicit enumerator(detail::ref_ptr<udev> context);

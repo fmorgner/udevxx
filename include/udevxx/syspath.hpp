@@ -11,14 +11,11 @@ namespace udevxx
 
   using syspath = detail::strong_type<std::string, struct syspath_tag>;
 
-  inline syspath operator""_syspath(char const * string, unsigned long size)
-  {
-    return syspath{{string, size}};
-  }
+  std::ostream & operator<<(std::ostream & output, syspath const & value);
 
-  inline std::ostream & operator<<(std::ostream & output, syspath const & value)
+  namespace literals
   {
-    return output << "SYSPATH: " << unsafe_decay_cast(value);
+    syspath operator""_syspath(char const * string, unsigned long size);
   }
 
 }  // namespace udevxx

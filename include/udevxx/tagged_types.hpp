@@ -48,9 +48,10 @@ namespace udevxx
     underlying_type m_real;
   };
 
-  using subsystem = tagged_type<std::string, struct subsystem_tag>;
-  using system_path = tagged_type<std::string, struct system_path_tag>;
   using device_number = tagged_type<dev_t, struct device_number_tag>;
+  using subsystem = tagged_type<std::string, struct subsystem_tag>;
+  using system_name = tagged_type<std::string, struct system_name_tag>;
+  using system_path = tagged_type<std::string, struct system_path_tag>;
 
   template <typename TaggedType, typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, TaggedType>>>
   std::ostream & operator<<(std::ostream & out, TaggedType const & tagged)
@@ -68,6 +69,11 @@ namespace udevxx
     system_path operator""_path(char const * string, unsigned long length)
     {
       return system_path{{string, length}};
+    }
+
+    system_name operator""_name(char const * string, unsigned long length)
+    {
+      return system_name{{string, length}};
     }
   }  // namespace literals
 

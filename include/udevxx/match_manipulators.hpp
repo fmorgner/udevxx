@@ -48,6 +48,11 @@ namespace udevxx
       return match_manipulator<WrappedType, exclude_tag>{std::move(wrapped)};
     }
 
+    constexpr auto is_initialized()
+    {
+      return initialized;
+    }
+
   }  // namespace manipulators
 }  // namespace udevxx
 

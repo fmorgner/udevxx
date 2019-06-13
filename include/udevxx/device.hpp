@@ -27,6 +27,11 @@ namespace udevxx
       return udevxx::subsystem{{udev_device_get_subsystem(m_raw)}};
     }
 
+    udevxx::system_name system_name() const
+    {
+      return udevxx::system_name{{udev_device_get_sysname(m_raw)}};
+    }
+
     private:
     device(udev_device * raw)
         : detail::raw_type_owner<udev_device>(raw, udev_device_ref, udev_device_unref)

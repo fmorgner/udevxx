@@ -13,6 +13,7 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package("PkgConfig")
+find_package("Threads")
 
 pkg_check_modules("udev"
     REQUIRED
@@ -34,6 +35,7 @@ set(LIBRARY_HEADERS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/list.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/matches.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/raw_type_owner.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/thread_aware.hpp"
 )
 
 add_library("udevxx" INTERFACE)
@@ -46,6 +48,7 @@ target_include_directories("udevxx"
 )
 target_link_libraries("udevxx" INTERFACE
     PkgConfig::udev
+    Threads::Threads
 )
 install(DIRECTORY "include/udevxx"
     DESTINATION "include"

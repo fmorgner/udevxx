@@ -23,6 +23,9 @@ namespace udevxx::detail
   template <>
   auto constexpr match_map<system_name, include_tag> = &udev_enumerate_add_match_sysname;
 
+  template <>
+  auto constexpr match_map<tag, include_tag> = &udev_enumerate_add_match_tag;
+
   template <typename KeyType, typename ManipulatorTag>
   auto constexpr is_matchable =
       std::negation_v<std::is_same<bool, std::remove_cv_t<decltype(match_map<KeyType, ManipulatorTag>)>>>;

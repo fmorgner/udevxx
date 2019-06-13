@@ -6,6 +6,8 @@
 
 #include <libudev.h>
 
+#include <vector>
+
 namespace udevxx
 {
   struct device : detail::raw_type_owner<udev_device>
@@ -30,6 +32,19 @@ namespace udevxx
     udevxx::system_name system_name() const
     {
       return udevxx::system_name{{udev_device_get_sysname(m_raw)}};
+    }
+
+    std::vector<tag> tags() const
+    {
+      auto tags = std::vector<tag>{};
+      for (auto entry = udev_device_get_tags_list_entry(m_raw); entry; entry = udev_list_entry_get_next(entry))
+      {
+        if (auto tag_name = udev_list_entry_get_name(entry))
+        {
+          tags.emplace_back(tag_name);
+        }
+      }
+      return tags;
     }
 
     private:

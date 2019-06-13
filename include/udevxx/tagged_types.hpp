@@ -52,6 +52,7 @@ namespace udevxx
   using subsystem = tagged_type<std::string, struct subsystem_tag>;
   using system_name = tagged_type<std::string, struct system_name_tag>;
   using system_path = tagged_type<std::string, struct system_path_tag>;
+  using tag = tagged_type<std::string, struct tag_tag>;
 
   template <typename TaggedType, typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, TaggedType>>>
   std::ostream & operator<<(std::ostream & out, TaggedType const & tagged)
@@ -75,6 +76,12 @@ namespace udevxx
     {
       return system_name{{string, length}};
     }
+
+    tag operator""_tag(char const * string, unsigned long length)
+    {
+      return tag{{string, length}};
+    }
+
   }  // namespace literals
 
 }  // namespace udevxx

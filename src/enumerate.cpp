@@ -16,7 +16,14 @@ int main()
     std::cout << device.system_path()
               << "\n\tsubsystem: " << device.subsystem()
               << "\n\tsysname: " << device.system_name()
-              << '\n';
+              << "\n\ttags:";
+
+    for(auto tag : device.tags())
+    {
+      std::cout << "\n\t\t- " << tag;
+    }
+
+    std::cout << '\n';
     // clang-format on
   }
 }

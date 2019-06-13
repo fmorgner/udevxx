@@ -8,6 +8,7 @@
 #include <libudev.h>
 
 #include <optional>
+#include <string>
 #include <vector>
 
 namespace udevxx
@@ -41,7 +42,7 @@ namespace udevxx
 
     std::vector<tag> tags() const
     {
-      auto tag_list = detail::list<tag, void>{udev_device_get_tags_list_entry(m_raw)};
+      auto tag_list = detail::list<tag, std::string>{udev_device_get_tags_list_entry(m_raw)};
       return {tag_list.begin(), tag_list.end()};
     }
 

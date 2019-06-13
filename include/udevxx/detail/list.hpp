@@ -4,6 +4,7 @@
 #include <libudev.h>
 
 #include <cstddef>
+#include <functional>
 #include <iterator>
 #include <optional>
 
@@ -13,31 +14,36 @@ namespace udevxx::detail
   template <typename NameType, typename ValueType>
   struct list
   {
+    using name_factory_type = std::function<NameType(char const *)>;
+    using value_factory_type = std::function<ValueType(char const *)>;
+
     struct entry
     {
-      constexpr entry(udev_list_entry * raw) noexcept
+      entry(udev_list_entry * raw, name_factory_type name_factory, value_factory_type value_factory) noexcept
           : m_raw{raw}
+          , m_name_factory{std::move(name_factory)}
+          , m_value_factory{std::move(value_factory)}
       {
       }
 
-      NameType name() const noexcept(noexcept(NameType{std::declval<char const *>()}))
+      NameType name() const noexcept(noexcept(std::declval<name_factory_type>()(std::declval<char const *>())))
       {
         auto raw_name = udev_list_entry_get_name(m_raw);
-        return NameType{raw_name ? raw_name : ""};
+        return m_name_factory(raw_name ? raw_name : "");
       }
 
-      ValueType value() const noexcept(noexcept(ValueType{std::declval<char const *>()}))
+      ValueType value() const noexcept(noexcept(std::declval<value_factory_type>()(std::declval<char const *>())))
       {
         auto raw_value = udev_list_entry_get_value(m_raw);
-        return ValueType{raw_value ? raw_value : ""};
+        return m_name_factory(raw_value ? raw_value : "");
       }
 
-      operator ValueType() const noexcept(noexcept(value()))
+      operator ValueType() const noexcept(noexcept(std::declval<entry>().value()))
       {
         return value();
       }
 
-      operator NameType() const noexcept(noexcept(name()))
+      operator NameType() const noexcept(noexcept(std::declval<entry>().name()))
       {
         return name();
       }
@@ -60,6 +66,8 @@ namespace udevxx::detail
 
       private:
       udev_list_entry * m_raw;
+      name_factory_type m_name_factory;
+      value_factory_type m_value_factory;
     };
 
     struct iterator
@@ -70,8 +78,8 @@ namespace udevxx::detail
       using reference = value_type &;
       using pointer = value_type *;
 
-      explicit iterator(udev_list_entry * entry)
-          : m_entry{entry}
+      iterator(udev_list_entry * entry, name_factory_type name_factory, value_factory_type value_factory)
+          : m_entry{entry, name_factory, value_factory}
       {
       }
 
@@ -107,23 +115,30 @@ namespace udevxx::detail
       entry m_entry;
     };
 
-    explicit list(udev_list_entry * head)
+    list(
+        udev_list_entry * head,
+        name_factory_type name_factory = [](auto n) { return NameType{n}; },
+        value_factory_type value_factory = [](auto v) { return ValueType{v}; })
         : m_head{head}
+        , m_name_factory{std::move(name_factory)}
+        , m_value_factory{std::move(value_factory)}
     {
     }
 
     constexpr iterator begin() const noexcept
     {
-      return iterator{m_head};
+      return iterator{m_head, m_name_factory, m_value_factory};
     }
 
     constexpr iterator end() const noexcept
     {
-      return iterator{nullptr};
+      return iterator{nullptr, m_name_factory, m_value_factory};
     }
 
     private:
     udev_list_entry * m_head;
+    name_factory_type m_name_factory;
+    value_factory_type m_value_factory;
   };
 
 }  // namespace udevxx::detail

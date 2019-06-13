@@ -3,14 +3,15 @@
 #include <iostream>
 
 using namespace udevxx::literals;
+using namespace udevxx::manipulators;
 
 int main()
 {
   auto context = udevxx::context{};
-  auto devices = context.devices();
+  auto devices = context.devices().match(initialized).match("leds"_sub);
 
-  for (auto const & device : devices.match("leds"_sub))
+  for (auto const & device : devices)
   {
-    std::cout << device.system_path()->c_str() << '\n';
+    std::cout << device.subsystem() << '\n';
   }
 }

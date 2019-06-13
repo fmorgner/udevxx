@@ -1,8 +1,10 @@
 #ifndef UDEVXX_DEVICE_ENUMERATOR_HPP
 #define UDEVXX_DEVICE_ENUMERATOR_HPP
 
+#include <udevxx/detail/matches.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
 #include <udevxx/device.hpp>
+#include <udevxx/match_manipulators.hpp>
 #include <udevxx/tagged_types.hpp>
 
 #include <libudev.h>
@@ -83,12 +85,6 @@ namespace udevxx
     {
     }
 
-    device_enumerator & match(subsystem const & subsystem)
-    {
-      udev_enumerate_add_match_subsystem(m_raw, subsystem->c_str());
-      return *this;
-    }
-
     iterator begin() const
     {
       udev_enumerate_scan_devices(m_raw);
@@ -98,6 +94,42 @@ namespace udevxx
     iterator end() const
     {
       return iterator{*this, nullptr};
+    }
+
+    iterator cbegin() const
+    {
+      return begin();
+    }
+
+    iterator cend() const
+    {
+      return end();
+    }
+
+    template <typename MatchKey,
+              typename MatchManipulatorTag,
+              typename = std::enable_if_t<detail::is_matchable<MatchKey, MatchManipulatorTag>>>
+    device_enumerator & match(match_manipulator<MatchKey, MatchManipulatorTag> const & matcher)
+    {
+      if constexpr (std::is_same_v<typename MatchKey::underlying_type, std::string>)
+      {
+        detail::match_map<MatchKey, MatchManipulatorTag>(m_raw, matcher->c_str());
+      }
+      return *this;
+    }
+
+    template <typename TaggedType,
+              typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, TaggedType>>,
+              typename = std::enable_if_t<detail::is_matchable<TaggedType, include_tag>>>
+    device_enumerator & match(TaggedType matcher)
+    {
+      return match(match_manipulator<TaggedType, include_tag>{matcher});
+    }
+
+    device_enumerator & match(decltype(initialized))
+    {
+      udev_enumerate_add_match_is_initialized(m_raw);
+      return *this;
     }
 
     private:

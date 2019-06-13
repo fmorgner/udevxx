@@ -27,9 +27,11 @@ set(LIBRARY_HEADERS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/context.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device_enumerator.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/match_manipulators.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/tagged_types.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/udevxx.hpp"
     # detail headers
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/matches.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/raw_type_owner.hpp"
 )
 

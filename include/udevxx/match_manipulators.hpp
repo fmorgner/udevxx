@@ -1,0 +1,54 @@
+#ifndef UDEVXX_MATCH_MANIPULATORS_HPP
+#define UDEVXX_MATCH_MANIPULATORS_HPP
+
+#include <udevxx/tagged_types.hpp>
+
+namespace udevxx
+{
+
+  template <typename WrappedType,
+            typename ManipulatorTag,
+            typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, WrappedType>>>
+  struct match_manipulator
+  {
+    auto * operator-> () noexcept
+    {
+      return wrapped.operator->();
+    }
+
+    auto const * operator-> () const noexcept
+    {
+      return wrapped.operator->();
+    }
+
+    WrappedType wrapped;
+  };
+
+  // clang-format off
+  struct exclude_tag{};
+  struct include_tag{};
+  // clang-format on
+
+  inline namespace manipulators
+  {
+
+    // clang-format off
+    struct {} initialized;
+    // clang-format on
+
+    template <typename WrappedType>
+    constexpr auto in(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
+    {
+      return match_manipulator<WrappedType, include_tag>{std::move(wrapped)};
+    }
+
+    template <typename WrappedType>
+    constexpr auto not_in(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
+    {
+      return match_manipulator<WrappedType, exclude_tag>{std::move(wrapped)};
+    }
+
+  }  // namespace manipulators
+}  // namespace udevxx
+
+#endif

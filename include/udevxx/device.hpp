@@ -1,6 +1,7 @@
 #ifndef UDEVXX_DEVICE_HPP
 #define UDEVXX_DEVICE_HPP
 
+#include <udevxx/detail/list.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
 #include <udevxx/tagged_types.hpp>
 
@@ -40,15 +41,8 @@ namespace udevxx
 
     std::vector<tag> tags() const
     {
-      auto tags = std::vector<tag>{};
-      for (auto entry = udev_device_get_tags_list_entry(m_raw); entry; entry = udev_list_entry_get_next(entry))
-      {
-        if (auto tag_name = udev_list_entry_get_name(entry))
-        {
-          tags.emplace_back(tag_name);
-        }
-      }
-      return tags;
+      auto tag_list = detail::list<tag, void>{udev_device_get_tags_list_entry(m_raw)};
+      return {tag_list.begin(), tag_list.end()};
     }
 
     std::optional<device> parent() const

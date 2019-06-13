@@ -31,6 +31,7 @@ set(LIBRARY_HEADERS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/tagged_types.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/udevxx.hpp"
     # detail headers
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/list.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/matches.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/raw_type_owner.hpp"
 )

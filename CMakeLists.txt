@@ -22,34 +22,33 @@ pkg_check_modules("udev"
 
 # Library
 
-add_library("udevxx"
-    "src/udevxx/context.cpp"
-    "src/udevxx/detail/device_iterator.cpp"
-    "src/udevxx/device.cpp"
-    "src/udevxx/device_enumerator.cpp"
-    "src/udevxx/subsystem.cpp"
-    "src/udevxx/sysname.cpp"
-    "src/udevxx/syspath.cpp"
-)
-target_link_libraries("udevxx"
-    PkgConfig::udev
-)
-target_include_directories("udevxx"
-    SYSTEM PUBLIC
-    "include"
+set(LIBRARY_HEADERS
+    # public headers
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/context.hpp"
+    # detail headers
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/raw_type_owner.hpp"
 )
 
-install(TARGETS "udevxx")
+add_library("udevxx" INTERFACE)
+target_sources("udevxx" INTERFACE
+    "$<BUILD_INTERFACE:${LIBRARY_HEADERS}>"
+)
+target_include_directories("udevxx"
+    INTERFACE SYSTEM $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+    INTERFACE SYSTEM $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/>
+)
+target_link_libraries("udevxx" INTERFACE
+    PkgConfig::udev
+)
 install(DIRECTORY "include/udevxx"
     DESTINATION "include"
-    FILES_MATCHING PATTERN "*.hpp"
 )
 
 # Demos
 
-add_executable("udevxx_demo"
-    "src/demo.cpp"
+add_executable("enumerate"
+    "src/enumerate.cpp"
 )
-target_link_libraries("udevxx_demo"
+target_link_libraries("enumerate"
     "udevxx"
 )

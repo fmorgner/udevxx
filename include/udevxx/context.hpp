@@ -1,26 +1,19 @@
-#ifndef UDEVXX_UDEV_CONTEXT_HPP
-#define UDEVXX_UDEV_CONTEXT_HPP
+#ifndef UDEVXX_CONTEXT_HPP
+#define UDEVXX_CONTEXT_HPP
 
-#include <udevxx/detail/ref_ptr.hpp>
-#include <udevxx/device_enumerator.hpp>
+#include <udevxx/detail/raw_type_owner.hpp>
 
 #include <libudev.h>
 
 namespace udevxx
 {
-
-  struct context
+  struct context : detail::raw_type_owner<udev>
   {
-    void swap(context & other) noexcept;
-
-    device_enumerator devices() const;
-
-    private:
-    detail::ref_ptr<udev> m_impl;
+    context()
+        : detail::raw_type_owner<udev>(udev_new(), udev_ref, udev_unref)
+    {
+    }
   };
-
-  void swap(context & lhs, context & rhs) noexcept;
-
-};  // namespace udevxx
+}  // namespace udevxx
 
 #endif

@@ -6,6 +6,7 @@
 
 #include <libudev.h>
 
+#include <optional>
 #include <vector>
 
 namespace udevxx
@@ -21,17 +22,20 @@ namespace udevxx
 
     udevxx::system_path system_path() const
     {
-      return udevxx::system_path{{udev_device_get_syspath(m_raw)}};
+      auto path = udev_device_get_syspath(m_raw);
+      return udevxx::system_path{{path ? path : ""}};
     }
 
     udevxx::subsystem subsystem() const
     {
-      return udevxx::subsystem{{udev_device_get_subsystem(m_raw)}};
+      auto sub = udev_device_get_subsystem(m_raw);
+      return udevxx::subsystem{{sub ? sub : ""}};
     }
 
     udevxx::system_name system_name() const
     {
-      return udevxx::system_name{{udev_device_get_sysname(m_raw)}};
+      auto name = udev_device_get_sysname(m_raw);
+      return udevxx::system_name{{name ? name : ""}};
     }
 
     std::vector<tag> tags() const
@@ -45,6 +49,15 @@ namespace udevxx
         }
       }
       return tags;
+    }
+
+    std::optional<device> parent() const
+    {
+      if (auto parent = udev_device_get_parent(m_raw))
+      {
+        return device{udev_device_ref(parent)};
+      }
+      return std::nullopt;
     }
 
     private:

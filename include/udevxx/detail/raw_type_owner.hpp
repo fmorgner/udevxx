@@ -43,20 +43,26 @@ namespace udevxx::detail
     raw_type_owner & operator=(raw_type_owner const & other) noexcept
     {
       auto copy = other;
-      swap(*this, other);
+      swap(*this, copy);
     }
 
     raw_type_owner & operator=(raw_type_owner && other) noexcept
     {
       swap(*this, other);
+      return *this;
     }
 
-    friend void swap(raw_type_owner lhs, raw_type_owner rhs) noexcept
+    RawType * get() const noexcept
+    {
+      return m_raw;
+    }
+
+    friend void swap(raw_type_owner & lhs, raw_type_owner & rhs) noexcept
     {
       std::swap(lhs.m_raw, rhs.m_raw);
     }
 
-    private:
+    protected:
     RawType * m_raw;
     retain_type m_retain;
     release_type m_release;

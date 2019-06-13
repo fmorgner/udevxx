@@ -25,6 +25,10 @@ pkg_check_modules("udev"
 set(LIBRARY_HEADERS
     # public headers
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/context.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device_enumerator.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/tagged_types.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/udevxx.hpp"
     # detail headers
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/detail/raw_type_owner.hpp"
 )

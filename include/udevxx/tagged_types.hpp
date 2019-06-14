@@ -24,6 +24,8 @@ namespace udevxx
     {
     }
 
+    tagged_type() noexcept(std::is_nothrow_default_constructible_v<UnderlyingType>) = default;
+
     underlying_type * operator->() noexcept
     {
       return &m_real;

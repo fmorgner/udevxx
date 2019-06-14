@@ -1,6 +1,7 @@
 #ifndef UDEVXX_DEVICE_HPP
 #define UDEVXX_DEVICE_HPP
 
+#include <udevxx/detail/api_utilities.hpp>
 #include <udevxx/detail/list.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
 #include <udevxx/detail/thread_aware.hpp>
@@ -28,36 +29,31 @@ namespace udevxx
     udevxx::system_path system_path() const
     {
       check_thread();
-      auto path = udev_device_get_syspath(m_raw);
-      return udevxx::system_path{{path ? path : ""}};
+      return detail::from_nullable<udevxx::system_path>(udev_device_get_syspath, m_raw);
     }
 
     udevxx::subsystem subsystem() const
     {
       check_thread();
-      auto sub = udev_device_get_subsystem(m_raw);
-      return udevxx::subsystem{{sub ? sub : ""}};
+      return detail::from_nullable<udevxx::subsystem>(udev_device_get_subsystem, m_raw);
     }
 
     udevxx::system_name system_name() const
     {
       check_thread();
-      auto name = udev_device_get_sysname(m_raw);
-      return udevxx::system_name{{name ? name : ""}};
+      return detail::from_nullable<udevxx::system_name>(udev_device_get_sysname, m_raw);
     }
 
     udevxx::device_path device_path() const
     {
       check_thread();
-      auto path = udev_device_get_devpath(m_raw);
-      return udevxx::device_path{{path ? path : ""}};
+      return detail::from_nullable<udevxx::device_path>(udev_device_get_devpath, m_raw);
     }
 
     udevxx::device_node device_node() const
     {
       check_thread();
-      auto node = udev_device_get_devnode(m_raw);
-      return udevxx::device_node{{node ? node : ""}};
+      return detail::from_nullable<udevxx::device_node>(udev_device_get_devnode, m_raw);
     }
 
     std::vector<tag> tags() const

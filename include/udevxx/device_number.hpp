@@ -33,6 +33,11 @@ namespace udevxx
       return minor(m_number);
     }
 
+    constexpr explicit operator dev_t() const noexcept
+    {
+      return m_number;
+    }
+
     private:
     dev_t m_number{};
   };

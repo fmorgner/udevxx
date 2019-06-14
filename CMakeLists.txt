@@ -27,6 +27,7 @@ set(LIBRARY_HEADERS
     # public headers
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/context.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device_enumerator.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device_kind.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device_number.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/device.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/udevxx/match_manipulators.hpp"

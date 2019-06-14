@@ -5,6 +5,7 @@
 #include <udevxx/detail/list.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
 #include <udevxx/detail/thread_aware.hpp>
+#include <udevxx/device_kind.hpp>
 #include <udevxx/device_number.hpp>
 #include <udevxx/tagged_types.hpp>
 
@@ -48,8 +49,23 @@ namespace udevxx
       system_attribute const & m_attribute;
     };
 
+    device(context_type const & context, device_id const & id)
+        : device{udev_device_new_from_device_id(context.get(), id->c_str())}
+    {
+    }
+
+    device(context_type const & context, device_kind kind, device_number number)
+        : device{udev_device_new_from_devnum(context.get(), static_cast<char>(kind), static_cast<dev_t>(number))}
+    {
+    }
+
     device(context_type const & context, system_path const & path)
         : device{udev_device_new_from_syspath(context.get(), path->c_str())}
+    {
+    }
+
+    device(context_type const & context, subsystem const & subsystem, system_name const & name)
+        : device{udev_device_new_from_subsystem_sysname(context.get(), subsystem->c_str(), name->c_str())}
     {
     }
 

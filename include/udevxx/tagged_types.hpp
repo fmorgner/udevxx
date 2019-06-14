@@ -57,6 +57,7 @@ namespace udevxx
   };
 
   using action = tagged_type<std::string, struct action_tag>;
+  using device_id = tagged_type<std::string, struct device_id_tag>;
   using device_link = tagged_type<std::filesystem::path, struct device_link_tag>;
   using device_node = tagged_type<std::filesystem::path, struct device_node_tag>;
   using device_path = tagged_type<std::string, struct device_path_tag>;
@@ -106,6 +107,11 @@ namespace udevxx
     system_attribute operator""_attr(char const * string, unsigned long length)
     {
       return system_attribute{{string, length}};
+    }
+
+    device_id operator""_id(char const * string, unsigned long length)
+    {
+      return device_id{{string, length}};
     }
 
   }  // namespace literals

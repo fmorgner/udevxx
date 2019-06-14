@@ -106,10 +106,6 @@ namespace udevxx::detail
         {
           m_entry.reset();
         }
-        // if (m_entry = next)
-        // {
-        //   m_entry.reset();
-        // }
         return *this;
       }
 

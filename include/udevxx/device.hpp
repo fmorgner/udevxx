@@ -5,6 +5,7 @@
 #include <udevxx/detail/list.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
 #include <udevxx/detail/thread_aware.hpp>
+#include <udevxx/device_number.hpp>
 #include <udevxx/tagged_types.hpp>
 
 #include <libudev.h>
@@ -30,6 +31,12 @@ namespace udevxx
     {
       check_thread();
       return detail::from_nullable<udevxx::device_node>(udev_device_get_devnode, m_raw);
+    }
+
+    udevxx::device_number device_number() const
+    {
+      check_thread();
+      return detail::from_nullable<udevxx::device_number>(udev_device_get_devnum, m_raw);
     }
 
     udevxx::device_path device_path() const

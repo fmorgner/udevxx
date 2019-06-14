@@ -51,6 +51,7 @@ void print(udevxx::device const & device, char const * prefix, int depth, std::o
   indent(out, depth + 1) << "subsystem: " << device.subsystem() << '\n';
   indent(out, depth + 1) << "sysname: " << device.system_name() << '\n';
   indent(out, depth + 1) << "sysnum: " << device.system_number() << '\n';
+  indent(out, depth + 1) << "devnum: " << device.device_number() << '\n';
   indent(out, depth + 1) << "devpath: " << device.device_path() << '\n';
   indent(out, depth + 1) << "devtype: " << device.device_type() << '\n';
   indent(out, depth + 1) << "tags: \n";

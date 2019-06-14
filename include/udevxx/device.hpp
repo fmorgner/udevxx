@@ -52,23 +52,6 @@ namespace udevxx
     {
     }
 
-    std::string operator[](property const & property) const
-    {
-      check_thread();
-      return detail::from_nullable<std::string>(udev_device_get_property_value, m_raw, property->c_str());
-    }
-
-    std::string operator[](system_attribute const & attribute) const
-    {
-      check_thread();
-      return detail::from_nullable<std::string>(udev_device_get_sysattr_value, m_raw, attribute->c_str());
-    }
-
-    attribute_adaptor operator[](system_attribute const & attribute)
-    {
-      return {*this, attribute};
-    }
-
     udevxx::action action() const
     {
       check_thread();
@@ -115,6 +98,23 @@ namespace udevxx
     {
       check_thread();
       return udev_device_get_is_initialized(m_raw) > 0;
+    }
+
+    std::string operator[](property const & property) const
+    {
+      check_thread();
+      return detail::from_nullable<std::string>(udev_device_get_property_value, m_raw, property->c_str());
+    }
+
+    std::string operator[](system_attribute const & attribute) const
+    {
+      check_thread();
+      return detail::from_nullable<std::string>(udev_device_get_sysattr_value, m_raw, attribute->c_str());
+    }
+
+    attribute_adaptor operator[](system_attribute const & attribute)
+    {
+      return {*this, attribute};
     }
 
     std::optional<device> parent() const

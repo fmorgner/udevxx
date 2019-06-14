@@ -46,6 +46,13 @@ namespace udevxx
       return udevxx::system_name{{name ? name : ""}};
     }
 
+    udevxx::device_path device_path() const
+    {
+      check_thread();
+      auto path = udev_device_get_devpath(m_raw);
+      return udevxx::device_path{{path ? path : ""}};
+    }
+
     std::vector<tag> tags() const
     {
       check_thread();

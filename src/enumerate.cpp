@@ -50,6 +50,7 @@ void print(udevxx::device const & device, char const * prefix, int depth, std::o
   indent(out, depth) << prefix << ": " << device.system_path() << '\n';
   indent(out, depth + 1) << "subsystem: " << device.subsystem() << '\n';
   indent(out, depth + 1) << "sysname: " << device.system_name() << '\n';
+  indent(out, depth + 1) << "devpath: " << device.device_path() << '\n';
   indent(out, depth + 1) << "tags: \n";
   map(device.tags(), [&](auto const & tag) { indent(out, depth + 2) << "- " << tag << '\n'; });
   map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });

@@ -65,11 +65,13 @@ namespace udevxx
 
     bool has(tag const & tag) const
     {
+      check_thread();
       return static_cast<bool>(udev_device_has_tag(m_raw, tag->c_str()));
     }
 
     bool is_initialized() const noexcept
     {
+      check_thread();
       return udev_device_get_is_initialized(m_raw) > 0;
     }
 

@@ -23,6 +23,16 @@ namespace udevxx
       check_thread();
       return device_enumerator(*this);
     }
+
+    std::vector<subsystem> subsystems() const
+    {
+      check_thread();
+      auto enumerator =
+          detail::raw_type_owner<udev_enumerate>{udev_enumerate_new(m_raw), udev_enumerate_ref, udev_enumerate_unref};
+      udev_enumerate_scan_subsystems(enumerator.get());
+      auto subsystem_list = detail::list<subsystem, std::string>{udev_enumerate_get_list_entry(enumerator.get())};
+      return {subsystem_list.begin(), subsystem_list.end()};
+    }
   };
 }  // namespace udevxx
 

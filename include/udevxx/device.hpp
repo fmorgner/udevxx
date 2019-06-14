@@ -27,6 +27,12 @@ namespace udevxx
     {
     }
 
+    udevxx::action action() const
+    {
+      check_thread();
+      return detail::from_nullable<udevxx::action>(udev_device_get_action, m_raw);
+    }
+
     udevxx::device_node device_node() const
     {
       check_thread();

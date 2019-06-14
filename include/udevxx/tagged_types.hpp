@@ -50,6 +50,7 @@ namespace udevxx
     underlying_type m_real;
   };
 
+  using action = tagged_type<std::string, struct action_tag>;
   using device_node = tagged_type<std::string, struct device_node_tag>;
   using device_path = tagged_type<std::string, struct device_path_tag>;
   using device_type = tagged_type<std::string, struct device_type_tag>;

@@ -33,6 +33,11 @@ namespace udevxx
     {
     }
 
+    bool add(system_path const & path)
+    {
+      return udev_enumerate_add_syspath(m_raw, path->c_str()) >= 0;
+    }
+
     iterator begin() const
     {
       check_thread();

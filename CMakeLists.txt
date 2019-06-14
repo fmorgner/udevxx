@@ -45,9 +45,9 @@ add_library("udevxx" INTERFACE)
 target_sources("udevxx" INTERFACE
     "$<BUILD_INTERFACE:${LIBRARY_HEADERS}>"
 )
-target_include_directories("udevxx"
-    INTERFACE SYSTEM $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
-    INTERFACE SYSTEM $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/>
+target_include_directories("udevxx" SYSTEM
+    INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+    INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/>
 )
 target_link_libraries("udevxx" INTERFACE
     PkgConfig::udev
@@ -60,9 +60,13 @@ install(DIRECTORY "include/udevxx"
 
 # Demos
 
-add_executable("enumerate"
-    "src/enumerate.cpp"
-)
-target_link_libraries("enumerate"
-    "udevxx"
-)
+option(BUILD_EXAMPLES "Build example programs" Off)
+
+if(BUILD_EXAMPLES)
+    add_executable("enumerate"
+        "src/enumerate.cpp"
+    )
+    target_link_libraries("enumerate"
+        "udevxx"
+    )
+endif()

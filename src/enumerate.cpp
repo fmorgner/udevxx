@@ -1,6 +1,7 @@
 #include <udevxx/udevxx.hpp>
 
 #include <iostream>
+#include <map>
 #include <vector>
 
 using namespace udevxx::literals;
@@ -15,6 +16,15 @@ void map(std::vector<ScopedType> const & scoped, Callable callable)
     {
       callable(value);
     }
+  }
+}
+
+template <typename Callable>
+void map(std::map<udevxx::property, std::string> const & scoped, Callable callable)
+{
+  for (auto const & value : scoped)
+  {
+    callable(value);
   }
 }
 
@@ -59,6 +69,9 @@ void print(udevxx::device const & device, char const * prefix, int depth, std::o
   indent(out, depth + 1) << "action: " << device.action() << '\n';
   indent(out, depth + 1) << "tags: \n";
   map(device.tags(), [&](auto const & tag) { indent(out, depth + 2) << "- " << tag << '\n'; });
+  indent(out, depth + 1) << "properties: \n";
+  map(device.properties(),
+      [&](auto const & entry) { indent(out, depth + 2) << entry.first << ": " << entry.second << '\n'; });
   map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });
 }
 

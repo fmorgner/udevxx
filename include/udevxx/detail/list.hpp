@@ -1,12 +1,16 @@
 #ifndef UDEVXX_DETAIL_LIST_HPP
 #define UDEVXX_DETAIL_LIST_HPP
 
+#include <udevxx/detail/api_utilities.hpp>
+
 #include <libudev.h>
 
 #include <cstddef>
 #include <functional>
+#include <iostream>
 #include <iterator>
 #include <optional>
+#include <utility>
 
 namespace udevxx::detail
 {
@@ -17,25 +21,28 @@ namespace udevxx::detail
     using name_factory_type = std::function<NameType(char const *)>;
     using value_factory_type = std::function<ValueType(char const *)>;
 
-    struct entry
+    struct entry : std::pair<NameType, ValueType>
     {
-      entry(udev_list_entry * raw, name_factory_type name_factory, value_factory_type value_factory) noexcept
-          : m_raw{raw}
-          , m_name_factory{std::move(name_factory)}
-          , m_value_factory{std::move(value_factory)}
+      using base_pair = std::pair<NameType, ValueType>;
+
+      using base_pair::first;
+      using base_pair::second;
+
+      entry(udev_list_entry * raw, name_factory_type name_factory, value_factory_type value_factory)
+          : base_pair{name_factory(detail::nullable_c_string(udev_list_entry_get_name, raw)),
+                      value_factory(detail::nullable_c_string(udev_list_entry_get_value, raw))}
+          , m_raw{raw}
       {
       }
 
       NameType name() const noexcept(noexcept(std::declval<name_factory_type>()(std::declval<char const *>())))
       {
-        auto raw_name = udev_list_entry_get_name(m_raw);
-        return m_name_factory(raw_name ? raw_name : "");
+        return first;
       }
 
       ValueType value() const noexcept(noexcept(std::declval<value_factory_type>()(std::declval<char const *>())))
       {
-        auto raw_value = udev_list_entry_get_value(m_raw);
-        return m_name_factory(raw_value ? raw_value : "");
+        return second;
       }
 
       operator ValueType() const noexcept(noexcept(std::declval<entry>().value()))
@@ -48,12 +55,6 @@ namespace udevxx::detail
         return name();
       }
 
-      entry & operator++() noexcept
-      {
-        m_raw = udev_list_entry_get_next(m_raw);
-        return *this;
-      }
-
       constexpr bool operator==(entry const & other) const noexcept
       {
         return m_raw == other.m_raw;
@@ -64,10 +65,13 @@ namespace udevxx::detail
         return m_raw;
       }
 
+      constexpr udev_list_entry * raw() const noexcept
+      {
+        return m_raw;
+      }
+
       private:
       udev_list_entry * m_raw;
-      name_factory_type m_name_factory;
-      value_factory_type m_value_factory;
     };
 
     struct iterator
@@ -79,13 +83,33 @@ namespace udevxx::detail
       using pointer = value_type *;
 
       iterator(udev_list_entry * entry, name_factory_type name_factory, value_factory_type value_factory)
-          : m_entry{entry, name_factory, value_factory}
+          : m_entry{std::in_place, entry, name_factory, value_factory}
+          , m_name_factory{name_factory}
+          , m_value_factory{value_factory}
       {
+        if (!*m_entry)
+        {
+          m_entry.reset();
+        }
       }
+
+      iterator() = default;
 
       iterator & operator++() noexcept
       {
-        ++m_entry;
+        auto next = udev_list_entry_get_next(m_entry->raw());
+        if (next)
+        {
+          m_entry.emplace(next, m_name_factory, m_value_factory);
+        }
+        else
+        {
+          m_entry.reset();
+        }
+        // if (m_entry = next)
+        // {
+        //   m_entry.reset();
+        // }
         return *this;
       }
 
@@ -108,11 +132,13 @@ namespace udevxx::detail
 
       entry operator*() const noexcept
       {
-        return m_entry;
+        return *m_entry;
       }
 
       private:
-      entry m_entry;
+      std::optional<entry> m_entry;
+      name_factory_type m_name_factory;
+      value_factory_type m_value_factory;
     };
 
     list(
@@ -132,7 +158,7 @@ namespace udevxx::detail
 
     constexpr iterator end() const noexcept
     {
-      return iterator{nullptr, m_name_factory, m_value_factory};
+      return iterator{};
     }
 
     private:

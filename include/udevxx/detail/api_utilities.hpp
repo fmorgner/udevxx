@@ -14,6 +14,13 @@ namespace udevxx::detail
     return nullable ? TargetType{nullable} : TargetType{};
   }
 
+  template <typename APIFunction, typename... APIArguments>
+  char const * nullable_c_string(APIFunction && api_function, APIArguments &&... arguments)
+  {
+    auto nullable = std::invoke(std::forward<APIFunction>(api_function), std::forward<APIArguments>(arguments)...);
+    return nullable ? nullable : "";
+  }
+
 }  // namespace udevxx::detail
 
 #endif

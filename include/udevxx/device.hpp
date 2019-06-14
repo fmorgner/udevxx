@@ -10,6 +10,7 @@
 
 #include <libudev.h>
 
+#include <map>
 #include <optional>
 #include <string>
 #include <vector>
@@ -25,6 +26,12 @@ namespace udevxx
     device(context_type const & context, system_path const & path)
         : device{udev_device_new_from_syspath(context.get(), path->c_str())}
     {
+    }
+
+    std::string operator[](property const & property) const
+    {
+      check_thread();
+      return detail::from_nullable<std::string>(udev_device_get_property_value, m_raw, property->c_str());
     }
 
     udevxx::action action() const
@@ -93,6 +100,13 @@ namespace udevxx
         return device{udev_device_ref(parent)};
       }
       return std::nullopt;
+    }
+
+    std::map<property, std::string> properties() const
+    {
+      check_thread();
+      auto property_list = detail::list<property, std::string>{udev_device_get_properties_list_entry(m_raw)};
+      return {property_list.begin(), property_list.end()};
     }
 
     udevxx::subsystem subsystem() const

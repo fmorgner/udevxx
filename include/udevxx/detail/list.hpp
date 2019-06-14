@@ -46,13 +46,12 @@ namespace udevxx::detail
         return second;
       }
 
-      operator NameType() const  // noexcept(noexcept(std::declval<entry>().name()))
+      operator NameType() const noexcept(noexcept(std::declval<entry>().name()))
       {
         return name();
       }
 
-      // template <typename =>
-      operator ValueType() const  // noexcept(noexcept(std::declval<entry>().value()))
+      operator ValueType() const noexcept(noexcept(std::declval<entry>().value()))
       {
         return value();
       }

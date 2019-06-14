@@ -65,10 +65,18 @@ namespace udevxx
       return end();
     }
 
+    template <typename... MatchTypes>
+    device_enumerator match(MatchTypes &&... matches)
+    {
+      auto filtered_enumerator = device_enumerator{m_context};
+      return filtered_enumerator.do_match(std::forward<MatchTypes>(matches)...);
+    }
+
+    private:
     template <typename MatchKey,
               typename MatchManipulatorTag,
               typename = std::enable_if_t<detail::is_matchable<MatchKey, MatchManipulatorTag>>>
-    device_enumerator & match(match_manipulator<MatchKey, MatchManipulatorTag> const & matcher)
+    device_enumerator do_match(match_manipulator<MatchKey, MatchManipulatorTag> const & matcher)
     {
       check_thread();
       if constexpr (std::is_same_v<typename MatchKey::underlying_type, std::string>)
@@ -80,7 +88,7 @@ namespace udevxx
 
     template <typename MatchManipulatorTag,
               typename = std::enable_if_t<detail::is_matchable<device, MatchManipulatorTag>>>
-    device_enumerator & match(match_manipulator<device, MatchManipulatorTag> const & matcher)
+    device_enumerator do_match(match_manipulator<device, MatchManipulatorTag> const & matcher)
     {
       check_thread();
       detail::match_map<device, MatchManipulatorTag>(m_raw, matcher.wrapped.m_raw);
@@ -90,9 +98,9 @@ namespace udevxx
     template <typename TaggedType,
               typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, TaggedType>>,
               typename = std::enable_if_t<detail::is_matchable<TaggedType, include_tag>>>
-    device_enumerator & match(TaggedType matcher)
+    device_enumerator do_match(TaggedType matcher)
     {
-      return match(match_manipulator<TaggedType, include_tag>{matcher});
+      return do_match(match_manipulator<TaggedType, include_tag>{matcher});
     }
 
     template <typename KeyType,
@@ -102,7 +110,7 @@ namespace udevxx
                                                             std::string,
                                                             std::remove_cv_t<ValueType>>,
               typename = std::enable_if_t<detail::is_matchable<KeyType, MatchManipulatorTag>>>
-    device_enumerator & match(KeyType const & key, match_manipulator<ValueType, MatchManipulatorTag> value)
+    device_enumerator do_match(KeyType const & key, match_manipulator<ValueType, MatchManipulatorTag> value)
     {
       check_thread();
       auto match_function = detail::match_map<KeyType, MatchManipulatorTag>;
@@ -117,14 +125,13 @@ namespace udevxx
       return *this;
     }
 
-    device_enumerator & match(decltype(initialized))
+    device_enumerator do_match(decltype(initialized))
     {
       check_thread();
       udev_enumerate_add_match_is_initialized(m_raw);
       return *this;
     }
 
-    private:
     detail::raw_type_owner<udev> m_context;
     device_list mutable m_devices;
   };

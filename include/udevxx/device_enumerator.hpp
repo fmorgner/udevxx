@@ -3,6 +3,7 @@
 
 #include <udevxx/detail/matches.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
+#include <udevxx/detail/thread_aware.hpp>
 #include <udevxx/device.hpp>
 #include <udevxx/match_manipulators.hpp>
 #include <udevxx/tagged_types.hpp>
@@ -17,7 +18,9 @@
 namespace udevxx
 {
 
-  struct device_enumerator : detail::raw_type_owner<udev_enumerate>
+  struct device_enumerator
+      : detail::raw_type_owner<udev_enumerate>
+      , detail::thread_aware
   {
     using device_list = detail::list<device, std::string>;
     using iterator = device_list::iterator;
@@ -32,6 +35,7 @@ namespace udevxx
 
     iterator begin() const
     {
+      check_thread();
       udev_enumerate_scan_devices(m_raw);
       using namespace std::placeholders;
       m_devices = device_list{udev_enumerate_get_list_entry(m_raw), [&](auto path) {
@@ -42,6 +46,7 @@ namespace udevxx
 
     iterator end() const
     {
+      check_thread();
       return m_devices.end();
     }
 
@@ -60,6 +65,7 @@ namespace udevxx
               typename = std::enable_if_t<detail::is_matchable<MatchKey, MatchManipulatorTag>>>
     device_enumerator & match(match_manipulator<MatchKey, MatchManipulatorTag> const & matcher)
     {
+      check_thread();
       if constexpr (std::is_same_v<typename MatchKey::underlying_type, std::string>)
       {
         detail::match_map<MatchKey, MatchManipulatorTag>(m_raw, matcher->c_str());
@@ -77,16 +83,12 @@ namespace udevxx
 
     device_enumerator & match(decltype(initialized))
     {
+      check_thread();
       udev_enumerate_add_match_is_initialized(m_raw);
       return *this;
     }
 
     private:
-    device make_device(char const * path)
-    {
-      return device{m_context, system_path{path}};
-    }
-
     detail::raw_type_owner<udev> m_context;
     device_list mutable m_devices;
   };

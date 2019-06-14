@@ -51,6 +51,7 @@ target_include_directories("udevxx"
 target_link_libraries("udevxx" INTERFACE
     PkgConfig::udev
     Threads::Threads
+    "stdc++fs"
 )
 install(DIRECTORY "include/udevxx"
     DESTINATION "include"

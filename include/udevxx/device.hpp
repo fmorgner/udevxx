@@ -10,6 +10,7 @@
 
 #include <libudev.h>
 
+#include <filesystem>
 #include <map>
 #include <optional>
 #include <string>
@@ -98,6 +99,13 @@ namespace udevxx
     {
       check_thread();
       return udev_device_get_is_initialized(m_raw) > 0;
+    }
+
+    std::vector<device_link> links() const
+    {
+      check_thread();
+      auto property_list = detail::list<device_link, std::string>{udev_device_get_devlinks_list_entry(m_raw)};
+      return {property_list.begin(), property_list.end()};
     }
 
     std::string operator[](property const & property) const

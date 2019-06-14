@@ -73,6 +73,8 @@ inline namespace traverse
     indent(out, depth + 1) << "driver: " << device.driver() << '\n';
     indent(out, depth + 1) << "initialized: " << (device.is_initialized() ? "yes" : "no") << '\n';
     indent(out, depth + 1) << "action: " << device.action() << '\n';
+    indent(out, depth + 1) << "links: " << device.action() << '\n';
+    map(device.links(), [&](auto const & path) { indent(out, depth + 2) << "- " << path->native() << '\n'; });
     indent(out, depth + 1) << "tags: \n";
     map(device.tags(), [&](auto const & tag) { indent(out, depth + 2) << "- " << tag << '\n'; });
     indent(out, depth + 1) << "properties: \n";
@@ -81,7 +83,7 @@ inline namespace traverse
     indent(out, depth + 1) << "attributes: \n";
     map(device.system_attributes(),
         [&](auto const & attr) { indent(out, depth + 2) << attr << " => " << device[attr] << '\n'; });
-    map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });
+    // map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });
   }
 
 }  // namespace traverse

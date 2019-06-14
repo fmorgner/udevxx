@@ -3,6 +3,7 @@
 
 #include <libudev.h>
 
+#include <filesystem>
 #include <ostream>
 #include <string>
 #include <type_traits>
@@ -56,6 +57,7 @@ namespace udevxx
   };
 
   using action = tagged_type<std::string, struct action_tag>;
+  using device_link = tagged_type<std::filesystem::path, struct device_link_tag>;
   using device_node = tagged_type<std::string, struct device_node_tag>;
   using device_path = tagged_type<std::string, struct device_path_tag>;
   using device_type = tagged_type<std::string, struct device_type_tag>;

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <iterator>
 #include <optional>
+#include <string>
 #include <utility>
 
 namespace udevxx::detail
@@ -45,14 +46,15 @@ namespace udevxx::detail
         return second;
       }
 
-      operator ValueType() const noexcept(noexcept(std::declval<entry>().value()))
-      {
-        return value();
-      }
-
-      operator NameType() const noexcept(noexcept(std::declval<entry>().name()))
+      operator NameType() const  // noexcept(noexcept(std::declval<entry>().name()))
       {
         return name();
+      }
+
+      // template <typename =>
+      operator ValueType() const  // noexcept(noexcept(std::declval<entry>().value()))
+      {
+        return value();
       }
 
       constexpr bool operator==(entry const & other) const noexcept

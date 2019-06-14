@@ -65,7 +65,7 @@ namespace udevxx
       auto enumerator =
           detail::raw_type_owner<udev_enumerate>{udev_enumerate_new(m_raw), udev_enumerate_ref, udev_enumerate_unref};
       udev_enumerate_scan_subsystems(enumerator.get());
-      auto subsystem_list = detail::list<subsystem, std::string>{udev_enumerate_get_list_entry(enumerator.get())};
+      auto subsystem_list = detail::list<subsystem, black_hole>{udev_enumerate_get_list_entry(enumerator.get())};
       return {subsystem_list.begin(), subsystem_list.end()};
     }
   };

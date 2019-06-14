@@ -212,7 +212,7 @@ namespace udevxx
     std::vector<system_attribute> system_attributes() const
     {
       check_thread();
-      auto attribute_list = detail::list<system_attribute, std::string>{udev_device_get_sysattr_list_entry(m_raw)};
+      auto attribute_list = detail::list<system_attribute, black_hole>{udev_device_get_sysattr_list_entry(m_raw)};
       return {attribute_list.begin(), attribute_list.end()};
     }
 
@@ -237,7 +237,7 @@ namespace udevxx
     std::vector<tag> tags() const
     {
       check_thread();
-      auto tag_list = detail::list<tag, std::string>{udev_device_get_tags_list_entry(m_raw)};
+      auto tag_list = detail::list<tag, black_hole>{udev_device_get_tags_list_entry(m_raw)};
       return {tag_list.begin(), tag_list.end()};
     }
 

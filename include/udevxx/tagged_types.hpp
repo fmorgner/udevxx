@@ -50,6 +50,14 @@ namespace udevxx
   {
   };
 
+  struct black_hole
+  {
+    template <typename... Consumed>
+    black_hole(Consumed &&...)
+    {
+    }
+  };
+
   template <typename UnderlyingType, typename Tag>
   struct tagged_type : tagged_type_tag
   {

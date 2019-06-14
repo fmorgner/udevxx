@@ -67,7 +67,7 @@ namespace udevxx
   using system_attribute = tagged_type<std::string, struct system_attribute_tag>;
   using system_name = tagged_type<std::string, struct system_name_tag>;
   using system_number = tagged_type<std::string, struct system_number_tag>;
-  using system_path = tagged_type<std::string, struct system_path_tag>;
+  using system_path = tagged_type<std::filesystem::path, struct system_path_tag>;
   using tag = tagged_type<std::string, struct tag_tag>;
 
   template <typename TaggedType, typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, TaggedType>>>
@@ -85,7 +85,7 @@ namespace udevxx
 
     system_path operator""_path(char const * string, unsigned long length)
     {
-      return system_path{{string, length}};
+      return system_path{std::string{string, length}};
     }
 
     system_name operator""_name(char const * string, unsigned long length)

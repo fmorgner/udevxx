@@ -34,6 +34,8 @@ namespace udevxx
   };
 
   // clang-format off
+  struct differs_tag{};
+  struct equals_tag{};
   struct exclude_tag{};
   struct include_tag{};
   struct parent_tag{};
@@ -73,7 +75,13 @@ namespace udevxx
     template <typename WrappedType>
     constexpr auto is(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
     {
-      return match_manipulator<WrappedType, include_tag>{std::move(wrapped)};
+      return match_manipulator<WrappedType, equals_tag>{std::move(wrapped)};
+    }
+
+    template <typename WrappedType>
+    constexpr auto is_not(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
+    {
+      return match_manipulator<WrappedType, differs_tag>{std::move(wrapped)};
     }
 
     constexpr auto is_initialized()

@@ -30,6 +30,15 @@ namespace udevxx::detail
   template <>
   auto constexpr match_map<device, parent_tag> = &udev_enumerate_add_match_parent;
 
+  template <>
+  auto constexpr match_map<property, equals_tag> = &udev_enumerate_add_match_property;
+
+  template <>
+  auto constexpr match_map<system_attribute, equals_tag> = &udev_enumerate_add_match_sysattr;
+
+  template <>
+  auto constexpr match_map<system_attribute, differs_tag> = &udev_enumerate_add_nomatch_sysattr;
+
   template <typename KeyType, typename ManipulatorTag>
   auto constexpr is_matchable =
       std::negation_v<std::is_same<bool, std::remove_cv_t<decltype(match_map<KeyType, ManipulatorTag>)>>>;

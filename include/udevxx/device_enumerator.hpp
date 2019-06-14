@@ -90,17 +90,32 @@ namespace udevxx
       return match(match_manipulator<TaggedType, include_tag>{matcher});
     }
 
+    template <typename KeyType,
+              typename ValueType,
+              typename MatchManipulatorTag,
+              typename StringValueType = std::conditional_t<std::is_same_v<char const *, std::remove_cv_t<ValueType>>,
+                                                            std::string,
+                                                            std::remove_cv_t<ValueType>>,
+              typename = std::enable_if_t<detail::is_matchable<KeyType, MatchManipulatorTag>>>
+    device_enumerator & match(KeyType const & key, match_manipulator<ValueType, MatchManipulatorTag> value)
+    {
+      check_thread();
+      auto match_function = detail::match_map<KeyType, MatchManipulatorTag>;
+      if constexpr (std::is_same_v<std::remove_cv_t<ValueType>, StringValueType>)
+      {
+        match_function(m_raw, key->c_str(), value.wrapped.c_str());
+      }
+      else
+      {
+        match_function(m_raw, key->c_str(), value.wrapped);
+      }
+      return *this;
+    }
+
     device_enumerator & match(decltype(initialized))
     {
       check_thread();
       udev_enumerate_add_match_is_initialized(m_raw);
-      return *this;
-    }
-
-    device_enumerator & match(property const & property, match_manipulator<std::string, include_tag> value)
-    {
-      check_thread();
-      udev_enumerate_add_match_property(m_raw, property->c_str(), value.wrapped.c_str());
       return *this;
     }
 

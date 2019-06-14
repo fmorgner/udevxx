@@ -53,6 +53,13 @@ namespace udevxx
       return udevxx::device_path{{path ? path : ""}};
     }
 
+    udevxx::device_node device_node() const
+    {
+      check_thread();
+      auto node = udev_device_get_devnode(m_raw);
+      return udevxx::device_node{{node ? node : ""}};
+    }
+
     std::vector<tag> tags() const
     {
       check_thread();

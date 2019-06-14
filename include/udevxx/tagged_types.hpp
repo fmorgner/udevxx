@@ -48,6 +48,7 @@ namespace udevxx
     underlying_type m_real;
   };
 
+  using device_node = tagged_type<std::string, struct device_node_tag>;
   using device_number = tagged_type<dev_t, struct device_number_tag>;
   using device_path = tagged_type<std::string, struct device_path_tag>;
   using subsystem = tagged_type<std::string, struct subsystem_tag>;

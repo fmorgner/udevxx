@@ -59,6 +59,16 @@ namespace udevxx
       return std::nullopt;
     }
 
+    std::optional<device> parent(udevxx::subsystem const & subsystem, udevxx::device_type const & device_type) const
+    {
+      check_thread();
+      if (auto parent = udev_device_get_parent_with_subsystem_devtype(m_raw, subsystem->c_str(), device_type->c_str()))
+      {
+        return device{udev_device_ref(parent)};
+      }
+      return std::nullopt;
+    }
+
     udevxx::subsystem subsystem() const
     {
       check_thread();

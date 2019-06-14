@@ -43,7 +43,9 @@ namespace udevxx::detail
       return *this;
     }
 
-    void check_thread() const
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wexceptions"
+    void check_thread() const noexcept
     {
       if (m_thread_id != std::this_thread::get_id())
       {
@@ -51,6 +53,7 @@ namespace udevxx::detail
                                "(see man 3 libudev)!"};
       }
     }
+#pragma GCC diagnostic pop
 
     private:
     std::thread::id m_thread_id;

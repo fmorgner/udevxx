@@ -3,6 +3,7 @@
 
 #include <udevxx/detail/list.hpp>
 #include <udevxx/detail/raw_type_owner.hpp>
+#include <udevxx/detail/thread_aware.hpp>
 #include <udevxx/tagged_types.hpp>
 
 #include <libudev.h>
@@ -13,7 +14,9 @@
 
 namespace udevxx
 {
-  struct device : detail::raw_type_owner<udev_device>
+  struct device
+      : detail::raw_type_owner<udev_device>
+      , detail::thread_aware
   {
     using context_type = detail::raw_type_owner<udev>;
 
@@ -24,30 +27,35 @@ namespace udevxx
 
     udevxx::system_path system_path() const
     {
+      check_thread();
       auto path = udev_device_get_syspath(m_raw);
       return udevxx::system_path{{path ? path : ""}};
     }
 
     udevxx::subsystem subsystem() const
     {
+      check_thread();
       auto sub = udev_device_get_subsystem(m_raw);
       return udevxx::subsystem{{sub ? sub : ""}};
     }
 
     udevxx::system_name system_name() const
     {
+      check_thread();
       auto name = udev_device_get_sysname(m_raw);
       return udevxx::system_name{{name ? name : ""}};
     }
 
     std::vector<tag> tags() const
     {
+      check_thread();
       auto tag_list = detail::list<tag, std::string>{udev_device_get_tags_list_entry(m_raw)};
       return {tag_list.begin(), tag_list.end()};
     }
 
     std::optional<device> parent() const
     {
+      check_thread();
       if (auto parent = udev_device_get_parent(m_raw))
       {
         return device{udev_device_ref(parent)};

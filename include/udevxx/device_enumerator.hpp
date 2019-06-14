@@ -97,6 +97,13 @@ namespace udevxx
       return *this;
     }
 
+    device_enumerator & match(property const & property, match_manipulator<std::string, include_tag> value)
+    {
+      check_thread();
+      udev_enumerate_add_match_property(m_raw, property->c_str(), value.wrapped.c_str());
+      return *this;
+    }
+
     private:
     detail::raw_type_owner<udev> m_context;
     device_list mutable m_devices;

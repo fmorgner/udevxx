@@ -22,6 +22,17 @@ namespace udevxx
     WrappedType wrapped;
   };
 
+  template <typename ManipulatorTag>
+  struct match_manipulator<std::string, ManipulatorTag>
+  {
+    match_manipulator(match_manipulator<char const *, ManipulatorTag> other)
+        : wrapped{other.wrapped}
+    {
+    }
+
+    std::string wrapped;
+  };
+
   // clang-format off
   struct exclude_tag{};
   struct include_tag{};
@@ -51,6 +62,18 @@ namespace udevxx
     constexpr auto parent(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
     {
       return match_manipulator<WrappedType, parent_tag>{std::move(wrapped)};
+    }
+
+    template <typename WrappedType>
+    constexpr auto value_of(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
+    {
+      return wrapped;
+    }
+
+    template <typename WrappedType>
+    constexpr auto is(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
+    {
+      return match_manipulator<WrappedType, include_tag>{std::move(wrapped)};
     }
 
     constexpr auto is_initialized()

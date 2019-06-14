@@ -4,6 +4,7 @@
 #include <udevxx/context.hpp>
 #include <udevxx/device.hpp>
 #include <udevxx/device_enumerator.hpp>
+#include <udevxx/device_kind.hpp>
 #include <udevxx/device_number.hpp>
 #include <udevxx/match_manipulators.hpp>
 #include <udevxx/tagged_types.hpp>

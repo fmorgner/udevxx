@@ -63,13 +63,14 @@ inline namespace traverse
 
   void print(udevxx::device const & device, char const * prefix, int depth, std::ostream & out = std::cout)
   {
-    indent(out, depth) << prefix << ": " << device.system_path() << '\n';
+    indent(out, depth) << prefix << ": " << device.system_path()->native() << '\n';
     indent(out, depth + 1) << "subsystem: " << device.subsystem() << '\n';
     indent(out, depth + 1) << "sysname: " << device.system_name() << '\n';
     indent(out, depth + 1) << "sysnum: " << device.system_number() << '\n';
     indent(out, depth + 1) << "devnum: " << device.device_number() << '\n';
     indent(out, depth + 1) << "devpath: " << device.device_path() << '\n';
     indent(out, depth + 1) << "devtype: " << device.device_type() << '\n';
+    indent(out, depth + 1) << "devnode: " << device.device_node()->native() << '\n';
     indent(out, depth + 1) << "driver: " << device.driver() << '\n';
     indent(out, depth + 1) << "initialized: " << (device.is_initialized() ? "yes" : "no") << '\n';
     indent(out, depth + 1) << "action: " << device.action() << '\n';
@@ -83,7 +84,7 @@ inline namespace traverse
     indent(out, depth + 1) << "attributes: \n";
     map(device.system_attributes(),
         [&](auto const & attr) { indent(out, depth + 2) << attr << " => " << device[attr] << '\n'; });
-    // map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });
+    map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });
   }
 
 }  // namespace traverse

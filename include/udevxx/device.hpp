@@ -23,6 +23,30 @@ namespace udevxx
   {
     using context_type = detail::raw_type_owner<udev>;
 
+    struct attribute_adaptor : detail::thread_aware
+    {
+      attribute_adaptor(device & device, system_attribute const & attribute) noexcept
+          : m_device{device}
+          , m_attribute{attribute}
+      {
+      }
+
+      operator system_attribute() const noexcept
+      {
+        return m_attribute;
+      }
+
+      bool operator=(std::string const & value) const noexcept
+      {
+        check_thread();
+        return udev_device_set_sysattr_value(m_device.m_raw, m_attribute->c_str(), value.c_str());
+      }
+
+      private:
+      device & m_device;
+      system_attribute const & m_attribute;
+    };
+
     device(context_type const & context, system_path const & path)
         : device{udev_device_new_from_syspath(context.get(), path->c_str())}
     {
@@ -32,6 +56,17 @@ namespace udevxx
     {
       check_thread();
       return detail::from_nullable<std::string>(udev_device_get_property_value, m_raw, property->c_str());
+    }
+
+    std::string operator[](system_attribute const & attribute) const
+    {
+      check_thread();
+      return detail::from_nullable<std::string>(udev_device_get_sysattr_value, m_raw, attribute->c_str());
+    }
+
+    attribute_adaptor operator[](system_attribute const & attribute)
+    {
+      return {*this, attribute};
     }
 
     udevxx::action action() const
@@ -113,6 +148,13 @@ namespace udevxx
     {
       check_thread();
       return detail::from_nullable<udevxx::subsystem>(udev_device_get_subsystem, m_raw);
+    }
+
+    std::vector<system_attribute> system_attributes() const
+    {
+      check_thread();
+      auto attribute_list = detail::list<system_attribute, std::string>{udev_device_get_sysattr_list_entry(m_raw)};
+      return {attribute_list.begin(), attribute_list.end()};
     }
 
     udevxx::system_name system_name() const

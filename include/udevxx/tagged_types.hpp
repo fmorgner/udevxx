@@ -62,6 +62,7 @@ namespace udevxx
   using driver = tagged_type<std::string, struct driver_tag>;
   using property = tagged_type<std::string, struct property_tag>;
   using subsystem = tagged_type<std::string, struct subsystem_tag>;
+  using system_attribute = tagged_type<std::string, struct system_attribute_tag>;
   using system_name = tagged_type<std::string, struct system_name_tag>;
   using system_number = tagged_type<std::string, struct system_number_tag>;
   using system_path = tagged_type<std::string, struct system_path_tag>;
@@ -98,6 +99,11 @@ namespace udevxx
     property operator""_prop(char const * string, unsigned long length)
     {
       return property{{string, length}};
+    }
+
+    system_attribute operator""_attr(char const * string, unsigned long length)
+    {
+      return system_attribute{{string, length}};
     }
 
   }  // namespace literals

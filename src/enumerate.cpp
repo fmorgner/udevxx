@@ -19,8 +19,8 @@ void map(std::vector<ScopedType> const & scoped, Callable callable)
   }
 }
 
-template <typename Callable>
-void map(std::map<udevxx::property, std::string> const & scoped, Callable callable)
+template <typename KeyType, typename ValueType, typename Callable>
+void map(std::map<KeyType, ValueType> const & scoped, Callable callable)
 {
   for (auto const & value : scoped)
   {
@@ -72,6 +72,9 @@ void print(udevxx::device const & device, char const * prefix, int depth, std::o
   indent(out, depth + 1) << "properties: \n";
   map(device.properties(),
       [&](auto const & entry) { indent(out, depth + 2) << entry.first << ": " << entry.second << '\n'; });
+  indent(out, depth + 1) << "attributes: \n";
+  map(device.system_attributes(),
+      [&](auto const & attr) { indent(out, depth + 2) << attr << " => " << device[attr] << '\n'; });
   map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });
 }
 

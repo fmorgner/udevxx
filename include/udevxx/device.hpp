@@ -62,6 +62,11 @@ namespace udevxx
       return static_cast<bool>(udev_device_has_tag(m_raw, tag->c_str()));
     }
 
+    bool is_initialized() const noexcept
+    {
+      return udev_device_get_is_initialized(m_raw) > 0;
+    }
+
     std::optional<device> parent() const
     {
       check_thread();

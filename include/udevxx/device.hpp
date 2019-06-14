@@ -38,6 +38,11 @@ namespace udevxx
       return detail::from_nullable<udevxx::device_path>(udev_device_get_devpath, m_raw);
     }
 
+    bool has(tag const & tag) const
+    {
+      return static_cast<bool>(udev_device_has_tag(m_raw, tag->c_str()));
+    }
+
     std::optional<device> parent() const
     {
       check_thread();

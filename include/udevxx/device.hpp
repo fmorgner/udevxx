@@ -26,10 +26,26 @@ namespace udevxx
     {
     }
 
-    udevxx::system_path system_path() const
+    udevxx::device_node device_node() const
     {
       check_thread();
-      return detail::from_nullable<udevxx::system_path>(udev_device_get_syspath, m_raw);
+      return detail::from_nullable<udevxx::device_node>(udev_device_get_devnode, m_raw);
+    }
+
+    udevxx::device_path device_path() const
+    {
+      check_thread();
+      return detail::from_nullable<udevxx::device_path>(udev_device_get_devpath, m_raw);
+    }
+
+    std::optional<device> parent() const
+    {
+      check_thread();
+      if (auto parent = udev_device_get_parent(m_raw))
+      {
+        return device{udev_device_ref(parent)};
+      }
+      return std::nullopt;
     }
 
     udevxx::subsystem subsystem() const
@@ -44,16 +60,10 @@ namespace udevxx
       return detail::from_nullable<udevxx::system_name>(udev_device_get_sysname, m_raw);
     }
 
-    udevxx::device_path device_path() const
+    udevxx::system_path system_path() const
     {
       check_thread();
-      return detail::from_nullable<udevxx::device_path>(udev_device_get_devpath, m_raw);
-    }
-
-    udevxx::device_node device_node() const
-    {
-      check_thread();
-      return detail::from_nullable<udevxx::device_node>(udev_device_get_devnode, m_raw);
+      return detail::from_nullable<udevxx::system_path>(udev_device_get_syspath, m_raw);
     }
 
     std::vector<tag> tags() const
@@ -61,16 +71,6 @@ namespace udevxx
       check_thread();
       auto tag_list = detail::list<tag, std::string>{udev_device_get_tags_list_entry(m_raw)};
       return {tag_list.begin(), tag_list.end()};
-    }
-
-    std::optional<device> parent() const
-    {
-      check_thread();
-      if (auto parent = udev_device_get_parent(m_raw))
-      {
-        return device{udev_device_ref(parent)};
-      }
-      return std::nullopt;
     }
 
     private:

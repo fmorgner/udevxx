@@ -53,6 +53,7 @@ namespace udevxx
   using device_node = tagged_type<std::string, struct device_node_tag>;
   using device_path = tagged_type<std::string, struct device_path_tag>;
   using device_type = tagged_type<std::string, struct device_type_tag>;
+  using driver = tagged_type<std::string, struct driver_tag>;
   using subsystem = tagged_type<std::string, struct subsystem_tag>;
   using system_name = tagged_type<std::string, struct system_name_tag>;
   using system_number = tagged_type<std::string, struct system_number_tag>;

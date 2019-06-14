@@ -54,6 +54,7 @@ void print(udevxx::device const & device, char const * prefix, int depth, std::o
   indent(out, depth + 1) << "devnum: " << device.device_number() << '\n';
   indent(out, depth + 1) << "devpath: " << device.device_path() << '\n';
   indent(out, depth + 1) << "devtype: " << device.device_type() << '\n';
+  indent(out, depth + 1) << "driver: " << device.driver() << '\n';
   indent(out, depth + 1) << "tags: \n";
   map(device.tags(), [&](auto const & tag) { indent(out, depth + 2) << "- " << tag << '\n'; });
   map(device.parent(), [&](auto const & parent) { visit(parent, print, "parent", out, depth + 1); });

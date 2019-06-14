@@ -51,6 +51,12 @@ namespace udevxx
       return detail::from_nullable<udevxx::device_type>(udev_device_get_devtype, m_raw);
     }
 
+    udevxx::driver driver() const
+    {
+      check_thread();
+      return detail::from_nullable<udevxx::driver>(udev_device_get_driver, m_raw);
+    }
+
     bool has(tag const & tag) const
     {
       return static_cast<bool>(udev_device_has_tag(m_raw, tag->c_str()));

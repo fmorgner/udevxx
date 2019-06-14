@@ -81,6 +81,12 @@ namespace udevxx
       return detail::from_nullable<udevxx::system_name>(udev_device_get_sysname, m_raw);
     }
 
+    udevxx::system_number system_number() const
+    {
+      check_thread();
+      return detail::from_nullable<udevxx::system_number>(udev_device_get_sysnum, m_raw);
+    }
+
     udevxx::system_path system_path() const
     {
       check_thread();

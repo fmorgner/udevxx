@@ -92,6 +92,7 @@ inline namespace traverse
 int main()
 {
   auto context = udevxx::context{};
+
   auto devices = context.devices();
 
   for (auto const & device : devices)

@@ -1,6 +1,7 @@
 #ifndef UDEVXX_MATCHES_HPP
 #define UDEVXX_MATCHES_HPP
 
+#include <udevxx/device.hpp>
 #include <udevxx/match_manipulators.hpp>
 #include <udevxx/tagged_types.hpp>
 
@@ -25,6 +26,9 @@ namespace udevxx::detail
 
   template <>
   auto constexpr match_map<tag, include_tag> = &udev_enumerate_add_match_tag;
+
+  template <>
+  auto constexpr match_map<device, parent_tag> = &udev_enumerate_add_match_parent;
 
   template <typename KeyType, typename ManipulatorTag>
   auto constexpr is_matchable =

@@ -73,6 +73,15 @@ namespace udevxx
       return *this;
     }
 
+    template <typename MatchManipulatorTag,
+              typename = std::enable_if_t<detail::is_matchable<device, MatchManipulatorTag>>>
+    device_enumerator & match(match_manipulator<device, MatchManipulatorTag> const & matcher)
+    {
+      check_thread();
+      detail::match_map<device, MatchManipulatorTag>(m_raw, matcher.wrapped.m_raw);
+      return *this;
+    }
+
     template <typename TaggedType,
               typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, TaggedType>>,
               typename = std::enable_if_t<detail::is_matchable<TaggedType, include_tag>>>

@@ -6,9 +6,7 @@
 namespace udevxx
 {
 
-  template <typename WrappedType,
-            typename ManipulatorTag,
-            typename = std::enable_if_t<std::is_base_of_v<tagged_type_tag, WrappedType>>>
+  template <typename WrappedType, typename ManipulatorTag>
   struct match_manipulator
   {
     auto * operator-> () noexcept
@@ -27,6 +25,7 @@ namespace udevxx
   // clang-format off
   struct exclude_tag{};
   struct include_tag{};
+  struct parent_tag{};
   // clang-format on
 
   inline namespace manipulators
@@ -46,6 +45,12 @@ namespace udevxx
     constexpr auto not_in(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
     {
       return match_manipulator<WrappedType, exclude_tag>{std::move(wrapped)};
+    }
+
+    template <typename WrappedType>
+    constexpr auto parent(WrappedType wrapped) noexcept(std::is_nothrow_move_constructible_v<WrappedType>)
+    {
+      return match_manipulator<WrappedType, parent_tag>{std::move(wrapped)};
     }
 
     constexpr auto is_initialized()

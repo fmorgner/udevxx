@@ -207,6 +207,8 @@ namespace udevxx
     }
 
     private:
+    friend struct device_enumerator;
+
     device(udev_device * raw)
         : detail::raw_type_owner<udev_device>(raw, udev_device_ref, udev_device_unref)
     {

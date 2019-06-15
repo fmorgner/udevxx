@@ -21,6 +21,15 @@ pkg_check_modules("udev"
     "libudev"
 )
 
+pkg_check_modules("gtkmm"
+    IMPORTED_TARGET GLOBAL
+    "gtkmm-3.0"
+)
+
+if(gtkmm_FOUND)
+    include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/GlibCompiledResources.cmake")
+endif()
+
 # Library
 
 set(LIBRARY_HEADERS
@@ -63,10 +72,15 @@ install(DIRECTORY "include/udevxx"
 option(BUILD_EXAMPLES "Build example programs" Off)
 
 if(BUILD_EXAMPLES)
-    add_executable("enumerate"
-        "src/enumerate.cpp"
-    )
-    target_link_libraries("enumerate"
-        "udevxx"
-    )
+
+    add_executable("enumerate" "src/enumerate/enumerate.cpp")
+    target_link_libraries("enumerate" "udevxx")
+
+    if(gtkmm_FOUND)
+        add_executable("devtree" "src/devtree/devtree.cpp")
+        add_glib_resource("devtree" "res/devtree/main_window.res"
+        HEADER_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/")
+        target_link_libraries("devtree" "udevxx" PkgConfig::gtkmm)
+    endif()
+
 endif()

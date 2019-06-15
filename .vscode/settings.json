@@ -3,6 +3,9 @@
     "ccls.misc.compilationDatabaseDirectory": "build",
     "cmake.parallelJobs": 2,
     "cmake.revealLog": "never",
+    "cmake.configureArgs": [
+        "-DBUILD_EXAMPLES=On"
+    ],
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "ccls-project.ccls"
 }

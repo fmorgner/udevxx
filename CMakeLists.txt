@@ -98,6 +98,13 @@ if(BUILD_EXAMPLES)
             "$<BUILD_INTERFACE:${DEVTREE_HEADERS}>"
         )
         target_link_libraries("devtree" "devtree_headers" "udevxx" PkgConfig::gtkmm)
+        configure_file("res/devtree/devtree.desktop" "res/devtree/devtree.desktop")
+        install(TARGETS "devtree"
+            RUNTIME DESTINATION "bin"
+        )
+        install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/res/devtree/devtree.desktop"
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications"
+        )
     endif()
 
 endif()

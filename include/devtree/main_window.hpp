@@ -3,6 +3,8 @@
 
 #include <gtkmm.h>
 
+#include <memory>
+
 namespace devtree
 {
 
@@ -12,7 +14,10 @@ namespace devtree
 
     private:
     Glib::RefPtr<Gtk::Builder> m_builder;
+    Glib::RefPtr<Gtk::Grid> m_detail_view;
+
     Gtk::TreeView * m_device_tree;
+    Gtk::Paned * m_paned;
   };
 
 }  // namespace devtree

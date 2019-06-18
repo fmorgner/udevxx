@@ -16,7 +16,7 @@ int main(int argc, char ** argv)
   auto app = Gtk::Application::create(argc, argv, "ch.hsr.ifs.devtree");
   auto builder = Gtk::Builder::create_from_resource("/main_window.glade");
 
-  auto model = std::make_shared<device_tree_model>(get_object<Gtk::TreeStore>(builder, "device_model"));
+  auto model = std::make_shared<device_tree_model>(get_object<Gtk::TreeStore>(builder, "device_tree_model"));
 
   auto context = udevxx::context{};
   for (udevxx::device const & device : context.devices())

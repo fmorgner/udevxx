@@ -29,9 +29,11 @@ Cpp11BracedListStyle: true
 FixNamespaceComments: true
 IncludeBlocks: Regroup
 IncludeCategories:
+    - Regex: '^".+'
+      Priority: 5
     - Regex: '^<udevxx/.*'
       Priority: 10
-    - Regex: '<libudev\.h>'
+    - Regex: '<[[:alnum:]._]+\.h>'
       Priority: 20
     - Regex: '<[[:alnum:]._]+>'
       Priority: 30

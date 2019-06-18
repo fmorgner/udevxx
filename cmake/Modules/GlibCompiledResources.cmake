@@ -70,6 +70,5 @@ function(add_glib_resource TARGET RESOURCE_FILE)
         DEPENDS "${RESOURCE_FILE}" ${RESOURCE_DEPENDENCIES}
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     )
-    target_include_directories("${TARGET}" PUBLIC "${OUTPUT_PATH}")
     target_sources("${TARGET}" PRIVATE "${SOURCE_FILE}")
 endfunction()

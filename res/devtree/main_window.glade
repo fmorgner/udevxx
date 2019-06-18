@@ -34,33 +34,96 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
   <!-- interface-license-type bsd3c -->
   <!-- interface-name Device Tree -->
   <!-- interface-authors Felix Morgner <felix.morgner@hsr.ch> -->
+  <object class="GtkTreeStore" id="device_model">
+    <columns>
+      <!-- column-name device_model_column -->
+      <column type="gchararray"/>
+      <!-- column-name subsystem_model_column -->
+      <column type="gchararray"/>
+      <!-- column-name path_model_column -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkApplicationWindow" id="main_window">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Devtree</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="main_header">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title" translatable="yes">udev Device Tree Explorer</property>
+        <property name="has_subtitle">False</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="GtkScrolledWindow" id="container_main_container">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="shadow_type">in</property>
         <child>
-          <object class="GtkTreeView" id="display_main_tree">
+          <object class="GtkTreeView" id="device_tree">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="model">device_model</property>
+            <property name="rules_hint">True</property>
+            <property name="search_column">0</property>
+            <property name="rubber_banding">True</property>
             <property name="enable_tree_lines">True</property>
             <child internal-child="selection">
               <object class="GtkTreeSelection"/>
             </child>
             <child>
-              <object class="GtkTreeViewColumn" id="tree_column_device">
+              <object class="GtkTreeViewColumn" id="device_tree_column">
+                <property name="resizable">True</property>
                 <property name="sizing">autosize</property>
                 <property name="title" translatable="yes">Device</property>
+                <property name="clickable">True</property>
+                <property name="sort_indicator">True</property>
+                <property name="sort_column_id">0</property>
+                <child>
+                  <object class="GtkCellRendererText" id="device_tree_column_cell"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
               </object>
             </child>
             <child>
-              <object class="GtkTreeViewColumn" id="tree_column_path">
+              <object class="GtkTreeViewColumn" id="subsystem_tree_column">
+                <property name="resizable">True</property>
+                <property name="sizing">autosize</property>
+                <property name="title" translatable="yes">Subsystem</property>
+                <property name="clickable">True</property>
+                <property name="sort_indicator">True</property>
+                <property name="sort_column_id">1</property>
+                <child>
+                  <object class="GtkCellRendererText" id="subsystem_tree_column_cell"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="path_tree_column">
+                <property name="resizable">True</property>
                 <property name="sizing">autosize</property>
                 <property name="title" translatable="yes">Path</property>
+                <property name="clickable">True</property>
+                <property name="sort_indicator">True</property>
+                <property name="sort_column_id">2</property>
+                <child>
+                  <object class="GtkCellRendererText" id="path_tree_column_cell"/>
+                  <attributes>
+                    <attribute name="text">2</attribute>
+                  </attributes>
+                </child>
               </object>
             </child>
           </object>

@@ -77,10 +77,27 @@ if(BUILD_EXAMPLES)
     target_link_libraries("enumerate" "udevxx")
 
     if(gtkmm_FOUND)
-        add_executable("devtree" "src/devtree/devtree.cpp")
-        add_glib_resource("devtree" "res/devtree/main_window.res"
-        HEADER_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/")
-        target_link_libraries("devtree" "udevxx" PkgConfig::gtkmm)
+        add_executable("devtree"
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/device_tree_model.cpp"            
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/devtree.cpp"
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/main_window.cpp"            
+        )
+        add_glib_resource("devtree"
+            "res/devtree/main_window.res"
+            HEADER_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/"
+        )
+        set(DEVTREE_HEADERS
+            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/builder_utilities.hpp"
+            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/device_tree_model.hpp"
+            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/main_window.hpp"
+        )
+        add_library("devtree_headers" INTERFACE)
+        target_sources("devtree_headers"
+            INTERFACE
+            "$<BUILD_INTERFACE:${DEVTREE_HEADERS}>"
+        )
+        target_link_libraries("devtree" "devtree_headers" "udevxx" PkgConfig::gtkmm)
     endif()
 
 endif()

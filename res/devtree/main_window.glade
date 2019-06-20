@@ -37,41 +37,32 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
   <object class="GtkApplicationWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Devtree</property>
-    <property name="default_width">640</property>
-    <property name="default_height">480</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="main_window_header">
-        <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="title" translatable="yes">udev Device Tree Explorer</property>
-        <property name="has_subtitle">False</property>
         <property name="show_close_button">True</property>
-        <child>
-          <placeholder/>
-        </child>
       </object>
     </child>
     <child>
-      <object class="GtkBox" id="main_window_box">
-        <property name="visible">True</property>
+      <object class="GtkBox">
         <property name="can_focus">True</property>
         <property name="orientation">vertical</property>
+        <property name="baseline_position">top</property>
         <child>
-          <object class="GtkPaned" id="main_window_panes">
-            <property name="visible">True</property>
+          <object class="GtkPaned">
             <property name="can_focus">True</property>
-            <property name="wide_handle">True</property>
             <child>
               <object class="GtkScrolledWindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="shadow_type">in</property>
                 <property name="min_content_width">400</property>
+                <property name="propagate_natural_width">True</property>
+                <property name="propagate_natural_height">True</property>
                 <child>
                   <object class="GtkTreeView" id="device_tree_view">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="search_column">0</property>
+                    <property name="can_focus">False</property>
                     <property name="rubber_banding">True</property>
                     <property name="enable_tree_lines">True</property>
                     <property name="activate_on_single_click">True</property>
@@ -83,7 +74,7 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
             <child>
@@ -92,9 +83,10 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkListBox" id="device_detail_view">
+                  <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Details</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -103,15 +95,9 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkListBox">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
-                    <property name="valign">start</property>
-                    <property name="label" translatable="yes">Details</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -122,7 +108,7 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
           </object>

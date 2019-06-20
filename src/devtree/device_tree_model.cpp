@@ -5,49 +5,35 @@
 namespace devtree
 {
 
-  device_tree_model_columns::device_tree_model_columns()
+  Glib::RefPtr<device_tree_model> device_tree_model::create()
   {
-    add(m_device);
-    add(m_subsystem);
-    add(m_path);
+    return Glib::RefPtr{new device_tree_model()};
   }
 
-  device_tree_model_columns::text_column_type device_tree_model_columns::device() const noexcept
+  device_tree_model::device_tree_model()
   {
-    return m_device;
-  }
+    columns.add(columns.device);
+    columns.add(columns.subsystem);
+    columns.add(columns.path);
 
-  device_tree_model_columns::text_column_type device_tree_model_columns::subsystem() const noexcept
-  {
-    return m_subsystem;
-  }
-
-  device_tree_model_columns::text_column_type device_tree_model_columns::path() const noexcept
-  {
-    return m_path;
-  }
-
-  device_tree_model::device_tree_model(Glib::RefPtr<Gtk::TreeStore> store)
-      : m_columns{}
-      , m_store{std::move(store)}
-  {
+    set_column_types(columns);
   }
 
   Gtk::TreeStore::iterator device_tree_model::add(entry const & entry)
   {
-    auto row = m_store->append();
-    (*row)[m_columns.device()] = entry.device;
-    (*row)[m_columns.subsystem()] = entry.subsystem;
-    (*row)[m_columns.path()] = entry.path;
+    auto row = append();
+    (*row)[columns.device] = entry.device;
+    (*row)[columns.subsystem] = entry.subsystem;
+    (*row)[columns.path] = entry.path;
     return row;
   }
 
   Gtk::TreeStore::iterator device_tree_model::add(Gtk::TreeStore::iterator parent, entry const & entry)
   {
-    auto row = m_store->append(parent->children());
-    (*row)[m_columns.device()] = entry.device;
-    (*row)[m_columns.subsystem()] = entry.subsystem;
-    (*row)[m_columns.path()] = entry.path;
+    auto row = append(parent->children());
+    (*row)[columns.device] = entry.device;
+    (*row)[columns.subsystem] = entry.subsystem;
+    (*row)[columns.path] = entry.path;
     return row;
   }
 

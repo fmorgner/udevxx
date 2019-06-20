@@ -3,34 +3,40 @@
 #include "devtree/builder_utilities.hpp"
 #include "devtree/device_tree_model.hpp"
 
-#include <iostream>
-
 namespace devtree
 {
-  main_window::main_window(BaseObjectType * window, Glib::RefPtr<Gtk::Builder> builder)
+  main_window::main_window(BaseObjectType * window,
+                           Glib::RefPtr<Gtk::Builder> builder,
+                           Glib::RefPtr<device_tree_model> tree_model)
       : Gtk::ApplicationWindow{window}
       , m_builder{builder}
-      , m_detail_view{get_object<Gtk::Grid>(m_builder, "detail_view")}
-      , m_device_tree{}
-      , m_paned{}
+      , m_tree_model{tree_model}
   {
-    g_assert(m_detail_view.get());
-    m_builder->get_widget("device_tree_view", m_device_tree);
-    g_assert(m_device_tree);
-    m_builder->get_widget("main_window_panes", m_paned);
-    g_assert(m_paned);
+    initialize_device_tree();
+    show_all_children();
+  }
 
-    m_device_tree->signal_row_activated().connect([&](auto const & path, auto * column) {
-      auto current_detail_view = m_paned->get_child2();
-      if (!current_detail_view)
-      {
-        m_paned->add2(*m_detail_view.get());
-      }
-      // Gtk::Revealer * sidebar = nullptr;
-      // m_builder->get_widget("sidebar", sidebar);
-      // g_assert(sidebar);
-      // sidebar->set_reveal_child(true);
-    });
+  Gtk::TreeView & main_window::device_tree() noexcept
+  {
+    return *get_raw_widget<Gtk::TreeView>(m_builder, "device_tree_view");
+  }
+
+  void main_window::initialize_device_tree() noexcept
+  {
+    auto & device_tree = this->device_tree();
+
+    device_tree.set_model(m_tree_model);
+    device_tree.append_column("Device", m_tree_model->columns.device);
+    device_tree.append_column("Subsystem", m_tree_model->columns.subsystem);
+    device_tree.append_column("Path", m_tree_model->columns.path);
+
+    for (auto column_idx = 0; column_idx < device_tree.get_n_columns(); ++column_idx)
+    {
+      auto column = device_tree.get_column(column_idx);
+      column->set_resizable(true);
+      column->set_sort_column(column_idx);
+      column->set_reorderable(true);
+    }
   }
 
 }  // namespace devtree

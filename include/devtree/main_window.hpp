@@ -10,14 +10,17 @@ namespace devtree
 
   struct main_window : Gtk::ApplicationWindow
   {
-    main_window(BaseObjectType * window, Glib::RefPtr<Gtk::Builder> builder);
+    main_window(BaseObjectType * window,
+                Glib::RefPtr<Gtk::Builder> builder,
+                Glib::RefPtr<struct device_tree_model> tree_model);
+
+    Gtk::TreeView & device_tree() noexcept;
 
     private:
-    Glib::RefPtr<Gtk::Builder> m_builder;
-    Glib::RefPtr<Gtk::Grid> m_detail_view;
+    void initialize_device_tree() noexcept;
 
-    Gtk::TreeView * m_device_tree;
-    Gtk::Paned * m_paned;
+    Glib::RefPtr<Gtk::Builder> m_builder;
+    Glib::RefPtr<device_tree_model> m_tree_model;
   };
 
 }  // namespace devtree

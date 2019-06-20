@@ -21,6 +21,15 @@ namespace devtree
     return Glib::RefPtr<ObjectType>::cast_dynamic(object);
   }
 
+  template <typename WidgetType>
+  auto get_raw_widget(Glib::RefPtr<Gtk::Builder> builder, Glib::ustring const & name)
+  {
+    WidgetType * widget = nullptr;
+    builder->get_widget(name, widget);
+    g_assert(widget);
+    return widget;
+  }
+
 }  // namespace devtree
 
 #endif

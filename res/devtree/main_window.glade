@@ -79,14 +79,21 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
             </child>
             <child>
               <object class="GtkBox">
+                <property name="width_request">350</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
+                <property name="baseline_position">top</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_top">2</property>
+                    <property name="margin_bottom">2</property>
                     <property name="label" translatable="yes">Details</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -95,7 +102,7 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkListBox">
+                  <object class="GtkSeparator">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -105,9 +112,21 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkListBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="selection_mode">none</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="resize">True</property>
+                <property name="resize">False</property>
                 <property name="shrink">False</property>
               </packing>
             </child>

@@ -15,6 +15,7 @@ namespace devtree
                 Glib::RefPtr<struct device_tree_model> tree_model);
 
     Gtk::TreeView & device_tree() noexcept;
+    Gtk::ListBox & detail_list_box() noexcept;
 
     private:
     void initialize_device_tree() noexcept;

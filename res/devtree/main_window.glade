@@ -113,7 +113,7 @@ Author: Felix Morgner <felix.morgner@hsr.ch>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkListBox">
+                  <object class="GtkListBox" id="detail_list_box">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="selection_mode">none</property>

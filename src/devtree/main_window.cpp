@@ -21,6 +21,11 @@ namespace devtree
     return *get_raw_widget<Gtk::TreeView>(m_builder, "device_tree_view");
   }
 
+  Gtk::ListBox & main_window::detail_list_box() noexcept
+  {
+    return *get_raw_widget<Gtk::ListBox>(m_builder, "detail_list_box");
+  }
+
   void main_window::initialize_device_tree() noexcept
   {
     auto & device_tree = this->device_tree();

@@ -21,15 +21,6 @@ pkg_check_modules("udev"
     "libudev"
 )
 
-pkg_check_modules("gtkmm"
-    IMPORTED_TARGET GLOBAL
-    "gtkmm-3.0"
-)
-
-if(gtkmm_FOUND)
-    include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/GlibCompiledResources.cmake")
-endif()
-
 # Library
 
 set(LIBRARY_HEADERS
@@ -72,41 +63,6 @@ install(DIRECTORY "include/udevxx"
 option(BUILD_EXAMPLES "Build example programs" Off)
 
 if(BUILD_EXAMPLES)
-
     add_executable("enumerate" "src/enumerate/enumerate.cpp")
     target_link_libraries("enumerate" "udevxx")
-
-    if(gtkmm_FOUND)
-        add_executable("devtree"
-            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/device_tree_model.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/devtree.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/main_controller.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/src/devtree/main_window.cpp"
-        )
-        add_glib_resource("devtree"
-            "res/devtree/main_window.res"
-            HEADER_DIRECTORY
-            "${CMAKE_CURRENT_BINARY_DIR}/"
-        )
-        set(DEVTREE_HEADERS
-            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/builder_utilities.hpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/device_tree_model.hpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/main_controller.hpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/include/devtree/main_window.hpp"
-        )
-        add_library("devtree_headers" INTERFACE)
-        target_sources("devtree_headers"
-            INTERFACE
-            "$<BUILD_INTERFACE:${DEVTREE_HEADERS}>"
-        )
-        target_link_libraries("devtree" "devtree_headers" "udevxx" PkgConfig::gtkmm)
-        configure_file("res/devtree/devtree.desktop" "res/devtree/devtree.desktop")
-        install(TARGETS "devtree"
-            RUNTIME DESTINATION "bin"
-        )
-        install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/res/devtree/devtree.desktop"
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications"
-        )
-    endif()
-
 endif()

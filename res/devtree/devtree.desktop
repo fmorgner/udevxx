@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=udev Device Tree Explorer
-GenericName=DevTree
-StartupNotify=true
-Exec=@CMAKE_INSTALL_PREFIX@/bin/devtree
-Categories=System;Utility;

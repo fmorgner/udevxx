@@ -5,11 +5,6 @@ project(udevxx
     VERSION "1.0.0"
 )
 
-set(CMAKE_CXX_STANDARD "17")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package("PkgConfig")
@@ -49,6 +44,29 @@ target_include_directories("udevxx" SYSTEM
     INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
     INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/>
 )
+target_compile_features("udevxx" INTERFACE
+    "cxx_std_17"
+    "cxx_auto_type"
+    "cxx_constexpr"
+    "cxx_decltype"
+    "cxx_defaulted_functions"
+    "cxx_generic_lambdas"
+    "cxx_lambdas"
+    "cxx_noexcept"
+    "cxx_nonstatic_member_init"
+    "cxx_nullptr"
+    "cxx_range_for"
+    "cxx_return_type_deduction"
+    "cxx_right_angle_brackets"
+    "cxx_rvalue_references"
+    "cxx_static_assert"
+    "cxx_strong_enums"
+    "cxx_trailing_return_types"
+    "cxx_uniform_initialization"
+    "cxx_user_literals"
+    "cxx_variable_templates"
+    "cxx_variadic_templates"
+)
 target_link_libraries("udevxx" INTERFACE
     PkgConfig::udev
     Threads::Threads
@@ -64,5 +82,9 @@ option(BUILD_EXAMPLES "Build example programs" Off)
 
 if(BUILD_EXAMPLES)
     add_executable("enumerate" "src/enumerate/enumerate.cpp")
+    set_target_properties("enumerate"
+        PROPERTIES
+        CXX_EXTENSIONS OFF
+    )
     target_link_libraries("enumerate" "udevxx")
 endif()

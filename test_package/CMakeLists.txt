@@ -1,17 +1,26 @@
-cmake_minimum_required(VERSION 3.14.0)
-project(PackageTest CXX)
+cmake_minimum_required(VERSION "3.9.0")
 
-set(CMAKE_CXX_STANDARD "17")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+project("PackageTest"
+    LANGUAGES CXX
+    DESCRIPTION "Conan udevxx test package"
+)
 
-find_package(Threads)
+find_package("Threads")
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+
 conan_basic_setup(TARGETS)
 
-add_executable(example example.cpp)
-target_link_libraries(example
-    CONAN_PKG::udevxx
-    Threads::Threads
+add_executable("${PROJECT_NAME}"
+    "src/package_test.cpp"
 )
+
+target_link_libraries("${PROJECT_NAME}"
+    "CONAN_PKG::udevxx"
+    "Threads::Threads"
+)
+
+# set_target_properties("${PROJECT_NAME}"
+#     PROPERTIES
+#     CXX_EXTENSIONS OFF
+# )

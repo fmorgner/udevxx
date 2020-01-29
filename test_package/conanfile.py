@@ -4,8 +4,11 @@ from conans import ConanFile, CMake, tools
 
 
 class UdevxxTestConan(ConanFile):
-    settings = None
+    settings = "compiler",
     generators = "cmake"
+
+    def configure(self):
+        self.settings.compiler.cppstd = "17"
 
     def build(self):
         cmake = CMake(self)
@@ -15,4 +18,4 @@ class UdevxxTestConan(ConanFile):
     def test(self):
         if not tools.cross_building(self.settings):
             os.chdir("bin")
-            self.run(".%sexample" % os.sep)
+            self.run(".%sPackageTest" % os.sep)

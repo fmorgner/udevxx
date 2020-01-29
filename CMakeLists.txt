@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION "3.9.0")
 
 project("udevxx"
-    LANGUAGES CXX
     VERSION "1.0.0"
+    LANGUAGES CXX
     DESCRIPTION "A C++ wrapper for libudev"
 )
 
